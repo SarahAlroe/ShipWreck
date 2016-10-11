@@ -1,3 +1,2 @@
 # ShipWreck
-Sænk some slagships
- Jeg har lavet et edit i vim 10hif9s
+A highly modular and customizable game of Battleships written in Java.
