@@ -29,9 +29,11 @@ public class Board {
     public int getSegment (int x,int y){
         return boardContents[x][y];
     }
+    public int getSegment (Position position){return getSegment(position.getX(),position.getY());}
     public void setSegment (int x,int y, int value) {
         boardContents[x][y] = value;
     }
+    public void setSegment (Position position, int value) {setSegment(position.getX(),position.getY(),value);}
 
     public int[] getBoardSize() {
         return new int[]{getBoardSizeX(), getBoardSizeY()};
@@ -52,5 +54,8 @@ public class Board {
         else {
             return segment;
         }
+    }
+    public int tryHit(Position position){
+        return tryHit(position.getX(),position.getY());
     }
 }
