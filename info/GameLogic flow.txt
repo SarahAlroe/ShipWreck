@@ -1,0 +1,21 @@
+State 0:
+.setup()
+Board[2]
+Player[2]
+
+enter
+State 1:
+Player - Wat do? Place plz
+Player - Wat place? 1/2/3 plz
+Player - Wher place? [x,y , x,y ....]
+Player - Wher den? [x,y , x,y ....]
+Player - Place - Ok
+Check if done? Enter
+
+State 2:
+Player - Wat do? Wait plz / Bomb plz
+Player - Bomb x,y plx? ok hit / ok no hit
+If bomb, is all bomb? enter
+
+State 3:
+Player - Wat do? Win/Lose
