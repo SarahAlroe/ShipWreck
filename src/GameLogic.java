@@ -50,33 +50,35 @@ public class GameLogic {
     public int getNextAction(Player player) {
         if (gameState == PRESETUP) {
             return WAIT;
-        } else if (gameState == PLAY){
-            if (player.equals(player1)){
-                if (activePlayer == 1){
+        } else if (gameState == PLAY) {
+            if (player.equals(player1)) {
+                if (activePlayer == 1) {
                     return PLAY;
-                }else {
+                } else {
                     return WAIT;
                 }
-            }else {
-                if (activePlayer == 2){
+            } else {
+                if (activePlayer == 2) {
                     return PLAY;
-                }else {
+                } else {
                     return WAIT;
                 }
             }
-        }
-        else return gameState;
+        } else return gameState;
         //TODO Add playstate options bomb / wait and win
     }
-    public int tryHitFrom(Position position, Player player){
+
+    public int tryHitFrom(Position position, Player player) {
         Board boardToHit;
-        if (player.equals(player1)){
-            boardToHit= board2;
-        }else {boardToHit=board1;}
+        if (player.equals(player1)) {
+            boardToHit = board2;
+        } else {
+            boardToHit = board1;
+        }
         int hit = boardToHit.tryHit(position);
-        if (boardToHit.isCleared()){
+        if (boardToHit.isCleared()) {
             gameState = GAMEOVER;
-            if (player.equals(player1)){
+            if (player.equals(player1)) {
                 hasWon = 1;
             } else {
                 hasWon = 2;
@@ -85,26 +87,28 @@ public class GameLogic {
         return hit;
         //TODO Find a way to make this independent of player count
     }
-    public void switchActivePlayer(){
-        if (activePlayer == 1){
+
+    public void switchActivePlayer() {
+        if (activePlayer == 1) {
             activePlayer = 2;
-        }else {
-            activePlayer=1;
+        } else {
+            activePlayer = 1;
         }
     }
-    public boolean getIsWinner(Player player){
-        if (player.equals(player1)){
-            return (hasWon==1);
+
+    public boolean getIsWinner(Player player) {
+        if (player.equals(player1)) {
+            return (hasWon == 1);
         } else if (player.equals(player2)) {
             return (hasWon == 2);
         }
         return false;
     }
+
     public int getNextPlacement(Player player) {
         if (player.equals(player1)) {
             return shipsToPlace1.get(0);
-        }
-        else {
+        } else {
             return shipsToPlace2.get(0);
         }
     }
@@ -129,45 +133,46 @@ public class GameLogic {
         }
         return positions;
     }
-    public boolean placeShip(Position startPosition, Position endPosition, Player player){
-        if (player.equals(player1)){
-            return placeShip(startPosition,endPosition,board1);
-        }else{
-            return placeShip(startPosition,endPosition,board2);
+
+    public boolean placeShip(Position startPosition, Position endPosition, Player player) {
+        if (player.equals(player1)) {
+            return placeShip(startPosition, endPosition, board1);
+        } else {
+            return placeShip(startPosition, endPosition, board2);
         }
     }
-    public boolean placeShip(Position startPosition, Position endPosition, Board board){
-        if (startPosition.equals(endPosition)){
-            board.setSegment(startPosition,Board.SHIP);
-        }else if (startPosition.getX()!=endPosition.getX()){
-            int changePos = startPosition.getX()-endPosition.getX();
-            if (changePos>0){
-                for (int i=0;i<changePos;i++){
-                    board.setSegment(startPosition.getX()+i, startPosition.getY(), Board.SHIP);
+
+    public boolean placeShip(Position startPosition, Position endPosition, Board board) {
+        if (startPosition.equals(endPosition)) {
+            board.setSegment(startPosition, Board.SHIP);
+        } else if (startPosition.getX() != endPosition.getX()) {
+            int changePos = startPosition.getX() - endPosition.getX();
+            if (changePos > 0) {
+                for (int i = 0; i < changePos; i++) {
+                    board.setSegment(startPosition.getX() + i, startPosition.getY(), Board.SHIP);
                 }
-            }else {
-                for (int i=0;i>changePos;i--){
-                    board.setSegment(startPosition.getX()+i, startPosition.getY(), Board.SHIP);
+            } else {
+                for (int i = 0; i > changePos; i--) {
+                    board.setSegment(startPosition.getX() + i, startPosition.getY(), Board.SHIP);
                 }
             }
-        }else if (startPosition.getY()!=endPosition.getY()){
-            int changePos = startPosition.getY()-endPosition.getY();
-            if (changePos>0){
-                for (int i=0;i<changePos;i++){
-                    board.setSegment(startPosition.getX(), startPosition.getY()+i, Board.SHIP);
+        } else if (startPosition.getY() != endPosition.getY()) {
+            int changePos = startPosition.getY() - endPosition.getY();
+            if (changePos > 0) {
+                for (int i = 0; i < changePos; i++) {
+                    board.setSegment(startPosition.getX(), startPosition.getY() + i, Board.SHIP);
                 }
-            }else {
-                for (int i=0;i>changePos;i--){
-                    board.setSegment(startPosition.getX(), startPosition.getY()+i, Board.SHIP);
+            } else {
+                for (int i = 0; i > changePos; i--) {
+                    board.setSegment(startPosition.getX(), startPosition.getY() + i, Board.SHIP);
                 }
             }
         }
         //Pop placed ship from the proper list - Possibly do extract
         //TODO only if actually placed
-        if (board.equals(board1)){
+        if (board.equals(board1)) {
             shipsToPlace1.remove(0);
-        }
-        else {
+        } else {
             shipsToPlace2.remove(0);
         }
         //Check if we are done placing ships
@@ -175,14 +180,16 @@ public class GameLogic {
         return true; //TODO Do check if placement can actually be done and return false if not
     }
 
-    public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {
-        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
-    }
-    public void checkIfSetupDone(){
-        if (shipsToPlace1.size()==0 && shipsToPlace2.size()==0){
+    public void checkIfSetupDone() {
+        if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
             gameState = PLAY;
         }
     }
+
+    public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {
+        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
+    }
+
     public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
         ArrayList<Position> possiblePositions = new ArrayList<>();
         int maxLengthX = board.getBoardSizeX();

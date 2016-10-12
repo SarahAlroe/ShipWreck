@@ -12,6 +12,32 @@ public class Board {
     private int boardSizeX;
     private int boardSizeY;
 
+    public Board(int size) {
+        boardSizeX = size;
+        boardSizeY = size;
+        boardContents = new int[boardSizeX][boardSizeY];
+    }
+
+    public int getSegment(Position position) {
+        return getSegment(position.getX(), position.getY());
+    }
+
+    public int getSegment(int x, int y) {
+        return boardContents[x][y];
+    }
+
+    public void setSegment(Position position, int value) {
+        setSegment(position.getX(), position.getY(), value);
+    }
+
+    public void setSegment(int x, int y, int value) {
+        boardContents[x][y] = value;
+    }
+
+    public int[] getBoardSize() {
+        return new int[]{getBoardSizeX(), getBoardSizeY()};
+    }
+
     public int getBoardSizeX() {
         return boardSizeX;
     }
@@ -20,50 +46,31 @@ public class Board {
         return boardSizeY;
     }
 
-    public Board(int size) {
-        boardSizeX = size;
-        boardSizeY = size;
-        boardContents = new int[boardSizeX][boardSizeY];
+    public int tryHit(Position position) {
+        return tryHit(position.getX(), position.getY());
     }
 
-    public int getSegment (int x,int y){
-        return boardContents[x][y];
-    }
-    public int getSegment (Position position){return getSegment(position.getX(),position.getY());}
-    public void setSegment (int x,int y, int value) {
-        boardContents[x][y] = value;
-    }
-    public void setSegment (Position position, int value) {setSegment(position.getX(),position.getY(),value);}
-
-    public int[] getBoardSize() {
-        return new int[]{getBoardSizeX(), getBoardSizeY()};
-    }
-    public int tryHit(int x, int y){
-        if(x>=getBoardSizeX() || y>=getBoardSizeY()){
+    public int tryHit(int x, int y) {
+        if (x >= getBoardSizeX() || y >= getBoardSizeY()) {
             return NOTHING;
         }
-        int segment=getSegment(x,y);
-        if (segment == SHIP){
-            setSegment(x,y,HIT_SHIP);
+        int segment = getSegment(x, y);
+        if (segment == SHIP) {
+            setSegment(x, y, HIT_SHIP);
             return SHIP;
-        }
-        else if (segment == NOTHING){
-            setSegment(x,y,HIT_NOTHING);
+        } else if (segment == NOTHING) {
+            setSegment(x, y, HIT_NOTHING);
             return NOTHING;
-        }
-        else {
+        } else {
             return segment;
         }
-    }
-    public int tryHit(Position position){
-        return tryHit(position.getX(),position.getY());
     }
 
     public boolean isCleared() {
         boolean isClear = true;
-        for (int i=0; i<getBoardSizeX();i++){
-            for (int j=0; j<getBoardSizeY();j++){
-                if (getSegment(i,j)==SHIP){
+        for (int i = 0; i < getBoardSizeX(); i++) {
+            for (int j = 0; j < getBoardSizeY(); j++) {
+                if (getSegment(i, j) == SHIP) {
                     isClear = false;
                 }
             }
