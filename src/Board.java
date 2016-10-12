@@ -58,4 +58,16 @@ public class Board {
     public int tryHit(Position position){
         return tryHit(position.getX(),position.getY());
     }
+
+    public boolean isCleared() {
+        boolean isClear = true;
+        for (int i=0; i<getBoardSizeX();i++){
+            for (int j=0; j<getBoardSizeY();j++){
+                if (getSegment(i,j)==SHIP){
+                    isClear = false;
+                }
+            }
+        }
+        return isClear;
+    }
 }

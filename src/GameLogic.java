@@ -10,6 +10,7 @@ public class GameLogic {
     public static final int PRESETUP = 1;
     public static final int SETUP = 2;
     public static final int PLAY = 3;
+    public static final int GAMEOVER = 4;
 
     private int boardSize = 10;
 
@@ -23,6 +24,9 @@ public class GameLogic {
     private ArrayList<Integer> shipsToPlace2 = new ArrayList<>();
 
     private int gameState = PRESETUP;
+
+    private int activePlayer = 0;
+    private int hasWon = 0;
 
     public void setup() {
         // load player and board, set gamestate
@@ -46,10 +50,56 @@ public class GameLogic {
     public int getNextAction(Player player) {
         if (gameState == PRESETUP) {
             return WAIT;
-        } else return gameState;
+        } else if (gameState == PLAY){
+            if (player.equals(player1)){
+                if (activePlayer == 1){
+                    return PLAY;
+                }else {
+                    return WAIT;
+                }
+            }else {
+                if (activePlayer == 2){
+                    return PLAY;
+                }else {
+                    return WAIT;
+                }
+            }
+        }
+        else return gameState;
         //TODO Add playstate options bomb / wait and win
     }
-
+    public int tryHitFrom(Position position, Player player){
+        Board boardToHit;
+        if (player.equals(player1)){
+            boardToHit= board2;
+        }else {boardToHit=board1;}
+        int hit = boardToHit.tryHit(position);
+        if (boardToHit.isCleared()){
+            gameState = GAMEOVER;
+            if (player.equals(player1)){
+                hasWon = 1;
+            } else {
+                hasWon = 2;
+            }
+        }
+        return hit;
+        //TODO Find a way to make this independent of player count
+    }
+    public void switchActivePlayer(){
+        if (activePlayer == 1){
+            activePlayer = 2;
+        }else {
+            activePlayer=1;
+        }
+    }
+    public boolean getIsWinner(Player player){
+        if (player.equals(player1)){
+            return (hasWon==1);
+        } else if (player.equals(player2)) {
+            return (hasWon == 2);
+        }
+        return false;
+    }
     public int getNextPlacement(Player player) {
         if (player.equals(player1)) {
             return shipsToPlace1.get(0);
