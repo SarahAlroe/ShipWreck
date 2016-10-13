@@ -34,17 +34,23 @@ public class GameLogic {
         board2 = new Board(boardSize);
         player1 = new Player(); //TODO Replace with proper player class
         player2 = new Player(); //TODO Replace with proper player class
-        shipsToPlace1 = generateShips(); //TODO Replace with getter or ship calculating
-        shipsToPlace1 = generateShips(); //TODO Replace with getter or ship calculating
+        shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
+        shipsToPlace1 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
         gameState = SETUP;
     }
 
-    private ArrayList<Integer> generateShips() {
+    private ArrayList<Integer> generateShipsFromBoardSize(int maxX, int maxY) {
         ArrayList<Integer> ships = new ArrayList<>();
-        ships.add(3);
-        ships.add(2);
-        ships.add(1);
-        return ships; //TODO make intellijent
+        int boardSize = maxX * maxY;
+        double[] shipAmount = {0.03, 0.02, 0.01, 0.005, 0.001};// Amount of [n+1] ships per square
+        int maxShipSize = 3;
+        for (int i = 1; i < maxShipSize; i++) {
+            int iShipsToPlace = (int) (shipAmount[i - 1] * boardSize);
+            for (int j = 0; j < iShipsToPlace; j++) {
+                ships.add(i);
+            }
+        }
+        return ships;
     }
 
     public int getNextAction(Player player) {
@@ -65,7 +71,6 @@ public class GameLogic {
                 }
             }
         } else return gameState;
-        //TODO Add playstate options bomb / wait and win
     }
 
     public int tryHitFrom(Position position, Player player) {
