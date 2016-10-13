@@ -148,6 +148,10 @@ public class GameLogic {
     }
 
     public boolean placeShip(Position startPosition, Position endPosition, Board board) {
+        //Check if can be placed, break if cant.
+        if (! canBePlaced(startPosition,endPosition,board)){
+            return false;
+        }
         if (startPosition.equals(endPosition)) {
             board.setSegment(startPosition, Board.SHIP);
         } else if (startPosition.getX() != endPosition.getX()) {
@@ -173,8 +177,7 @@ public class GameLogic {
                 }
             }
         }
-        //Pop placed ship from the proper list - Possibly do extract
-        //TODO only if actually placed
+        //Pop placed ship from the proper list - Consider extracting method
         if (board.equals(board1)) {
             shipsToPlace1.remove(0);
         } else {
@@ -182,7 +185,7 @@ public class GameLogic {
         }
         //Check if we are done placing ships
         checkIfSetupDone();
-        return true; //TODO Do check if placement can actually be done and return false if not
+        return true;
     }
 
     public void checkIfSetupDone() {
@@ -197,8 +200,6 @@ public class GameLogic {
 
     public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
         ArrayList<Position> possiblePositions = new ArrayList<>();
-        int maxLengthX = board.getBoardSizeX();
-        int maxLengthY = board.getBoardSizeY();
 
         if (canBePlaced(new Position(x,y),new Position(x+length,y),board)){
             possiblePositions.add(new Position(x + length, y));
