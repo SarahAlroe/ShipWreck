@@ -217,18 +217,8 @@ public class GameLogic {
 
     public boolean canBePlaced(Position firstPos, Position lastPos, Board board){
         //Check if within borders
-        if(firstPos.getX()<0 || firstPos.getX()>board.getBoardSizeX()){
-            return false;
-        }
-        if(firstPos.getY()<0 || firstPos.getY()>board.getBoardSizeY()){
-            return false;
-        }
-        if(lastPos.getX()<0 || lastPos.getX()>board.getBoardSizeX()){
-            return false;
-        }
-        if(lastPos.getY()<0 || lastPos.getY()>board.getBoardSizeY()){
-            return false;
-        }
+        if (! isWithinBorders(firstPos, board)) return false;
+        if (! isWithinBorders(lastPos, board)) return false;
         //Check if single block ship, and ok.
         if (firstPos.equals(lastPos) && board.getSegment(firstPos)==Board.NOTHING){
             return true;
@@ -271,6 +261,16 @@ public class GameLogic {
             return true;
         }
         return false;
+    }
+
+    private boolean isWithinBorders(Position position, Board board) {
+        if(position.getX()<0 || position.getX()>board.getBoardSizeX()){
+            return false;
+        }
+        if(position.getY()<0 || position.getY()>board.getBoardSizeY()){
+            return false;
+        }
+        return true;
     }
 
 }
