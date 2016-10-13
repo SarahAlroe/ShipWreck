@@ -200,19 +200,19 @@ public class GameLogic {
         int maxLengthX = board.getBoardSizeX();
         int maxLengthY = board.getBoardSizeY();
 
-        if (x + length < maxLengthX && board.getSegment(x + length, y) == Board.NOTHING) {
+        if (canBePlaced(new Position(x,y),new Position(x+length,y),board)){
             possiblePositions.add(new Position(x + length, y));
         }
-        if (x - length > 0 && board.getSegment(x - length, y) == Board.NOTHING) {
+        if (canBePlaced(new Position(x,y),new Position(x-length,y),board)){
             possiblePositions.add(new Position(x - length, y));
         }
-        if (y + length < maxLengthY && board.getSegment(x, y + length) == Board.NOTHING) {
+        if (canBePlaced(new Position(x,y),new Position(x,y+length),board)){
             possiblePositions.add(new Position(x + length, y));
         }
-        if (y - length > 0 && board.getSegment(x, y - length) == Board.NOTHING) {
+        if (canBePlaced(new Position(x,y),new Position(x,y-length),board)){
             possiblePositions.add(new Position(x, y - length));
         }
-        return possiblePositions; //TODO Note: Can place ships through other ships, recommend make test function.
+        return possiblePositions;
     }
 
     public boolean canBePlaced(Position firstPos, Position lastPos, Board board){
