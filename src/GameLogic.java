@@ -215,4 +215,62 @@ public class GameLogic {
         return possiblePositions; //TODO Note: Can place ships through other ships, recommend make test function.
     }
 
+    public boolean canBePlaced(Position firstPos, Position lastPos, Board board){
+        //Check if within borders
+        if(firstPos.getX()<0 || firstPos.getX()>board.getBoardSizeX()){
+            return false;
+        }
+        if(firstPos.getY()<0 || firstPos.getY()>board.getBoardSizeY()){
+            return false;
+        }
+        if(lastPos.getX()<0 || lastPos.getX()>board.getBoardSizeX()){
+            return false;
+        }
+        if(lastPos.getY()<0 || lastPos.getY()>board.getBoardSizeY()){
+            return false;
+        }
+        //Check if single block ship, and ok.
+        if (firstPos.equals(lastPos) && board.getSegment(firstPos)==Board.NOTHING){
+            return true;
+        }
+        //Check each position the ship is going to be on.
+        else if (firstPos.getX() < lastPos.getX()){
+            int xLength = lastPos.getX()-firstPos.getX();
+            for (int i = 0; i < xLength; i++) {
+                if (board.getSegment(firstPos.getX()+i, firstPos.getY())!=Board.NOTHING){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (firstPos.getX() > lastPos.getX()){
+            int xLength = firstPos.getX()-lastPos.getX();
+            for (int i = 0; i < xLength; i++) {
+                if (board.getSegment(lastPos.getX()+i, firstPos.getY())!=Board.NOTHING){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (firstPos.getY() < lastPos.getY()){
+            int yLength = lastPos.getY()-firstPos.getY();
+            for (int i = 0; i < yLength; i++) {
+                if (board.getSegment(firstPos.getX(), firstPos.getY()+i)!=Board.NOTHING){
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (firstPos.getY() > lastPos.getY()){
+            int yLength = firstPos.getY()-lastPos.getY();
+            for (int i = 0; i < yLength; i++) {
+                if (board.getSegment(firstPos.getX(), lastPos.getY()+i)!=Board.NOTHING){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 }
