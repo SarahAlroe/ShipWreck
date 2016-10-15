@@ -1,3 +1,4 @@
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 
 /**
@@ -5,6 +6,8 @@ import java.util.ArrayList;
  */
 
 public class GameLogic {
+    //Singleton spooks
+    private static GameLogic gameLogic = new GameLogic();
     //GameLogic constants
     public static final int WAIT = 0;
     public static final int PRESETUP = 1;
@@ -28,12 +31,18 @@ public class GameLogic {
     private int activePlayer = 0;
     private int hasWon = 0;
 
+    public static GameLogic getInstance(){
+        return gameLogic;
+    }
+
     public void setup() {
         // load player and board, set gamestate
         board1 = new Board(boardSize);
         board2 = new Board(boardSize);
-        player1 = new Player(); //TODO Replace with proper player class
-        player2 = new Player(); //TODO Replace with proper player class
+        player1 = new Player("Player-1"); //TODO Replace with proper player class
+        player1.start();
+        player2 = new Player("Player-1"); //TODO Replace with proper player class
+        player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace1 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
         gameState = SETUP;
