@@ -1,54 +1,47 @@
 /**
  * Created by silasa on 10/4/16.
  */
-public class Player implements Runnable{
+public abstract class Player implements Runnable {
+    protected GameLogic gameLogic;
     private Thread t;
     private String threadName;
+    protected long sleepTime = 10;
 
-    private long sleepTime = 10;
-
-    private GameLogic gameLogic;
-
-    Player(String name){
+    Player(String name) {
         threadName = name;
     }
-    public void run(){
-        gameLogic=GameLogic.getInstance();
-        while (true){
-            int currentAction=gameLogic.getNextAction(this);
-            if (currentAction == GameLogic.WAIT || currentAction == GameLogic.PRESETUP){
+
+    public void run() {
+        gameLogic = GameLogic.getInstance();
+        while (true) {
+            int currentAction = gameLogic.getNextAction(this);
+            if (currentAction == GameLogic.WAIT || currentAction == GameLogic.PRESETUP) {
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else if (currentAction==GameLogic.SETUP){
+            } else if (currentAction == GameLogic.SETUP) {
                 placeAShip();
-            }else if (currentAction == GameLogic.PLAY){
+            } else if (currentAction == GameLogic.PLAY) {
                 makeAMove();
-            }else if (currentAction == GameLogic.GAMEOVER){
+            } else if (currentAction == GameLogic.GAMEOVER) {
                 endGame();
                 break;
             }
         }
     }
 
-    private void endGame() {
+    abstract void endGame();
 
-    }
+    abstract void makeAMove();
 
-    private void makeAMove() {
+    abstract void placeAShip();
 
-    }
-
-    private void placeAShip() {
-
-    }
-
-    public void start(){
+    public void start() {
         if (t == null) {
-            t = new Thread (this, threadName);
-            t.start ();
+            t = new Thread(this, threadName);
+            t.start();
         }
     }
 }
