@@ -4,7 +4,7 @@
 public abstract class Player implements Runnable {
     protected GameLogic gameLogic;
     private Thread t;
-    private String threadName;
+    protected String threadName;
     protected long sleepTime = 10;
 
     Player(String name) {
