@@ -43,8 +43,6 @@ public class GameLogic {
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace2 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
-        System.out.println(shipsToPlace1.size());
-        System.out.println(shipsToPlace1.get(shipsToPlace1.size()-1));
         gameState = SETUP;
     }
 
@@ -90,15 +88,16 @@ public class GameLogic {
             boardToHit = board1;
         }
         int hit = boardToHit.tryHit(position);
-        if (hit==Board.SHIP){
-        if (boardToHit.isCleared()) {
-            gameState = GAMEOVER;
-            if (player.equals(player1)) {
-                hasWon = 1;
-            } else {
-                hasWon = 2;
+        if (hit == Board.SHIP) {
+            if (boardToHit.isCleared()) {
+                gameState = GAMEOVER;
+                if (player.equals(player1)) {
+                    hasWon = 1;
+                } else {
+                    hasWon = 2;
+                }
             }
-        }}
+        }
         switchActivePlayer();
         return hit;
         //TODO Find a way to make this independent of player count
@@ -130,12 +129,11 @@ public class GameLogic {
     }
 
     public int getNextPlacement(Player player) {
-        if (player.equals(player1) && shipsToPlace1.size()!=0) {
+        if (player.equals(player1) && shipsToPlace1.size() != 0) {
             return shipsToPlace1.get(0);
-        } else if(player.equals(player2) && shipsToPlace2.size()!=0) {
+        } else if (player.equals(player2) && shipsToPlace2.size() != 0) {
             return shipsToPlace2.get(0);
-        }
-        else return 0;
+        } else return 0;
     }
 
     public ArrayList<Position> getPlaceablePositions(Player player) {
@@ -261,10 +259,10 @@ public class GameLogic {
     }
 
     private boolean isWithinBorders(Position position, Board board) {
-        if (position.getX() < 0 || position.getX() > board.getBoardSizeX()-1) {
+        if (position.getX() < 0 || position.getX() > board.getBoardSizeX() - 1) {
             return false;
         }
-        if (position.getY() < 0 || position.getY() > board.getBoardSizeY()-1) {
+        if (position.getY() < 0 || position.getY() > board.getBoardSizeY() - 1) {
             return false;
         }
         return true;
@@ -275,7 +273,7 @@ public class GameLogic {
     }
 
     public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
-        length =length-1;
+        length = length - 1;
         ArrayList<Position> possiblePositions = new ArrayList<>();
 
         if (canBePlaced(new Position(x, y), new Position(x + length, y), board)) {

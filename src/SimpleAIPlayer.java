@@ -31,7 +31,7 @@ public class SimpleAIPlayer extends Player {
         while (true) {
             //Keep going until a successful placement.
             int shipLength = gameLogic.getNextPlacement(this);
-            if (shipLength==0){
+            if (shipLength == 0) {
                 break;
             }
             ArrayList<Position> placeablePositions = gameLogic.getPlaceablePositions(this);
