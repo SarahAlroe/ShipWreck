@@ -118,7 +118,14 @@ public class GameLogic {
         }
         return false;
     }
-
+    public int[] getEnemyBoardSize(Player player){
+        if (player.equals(player1)){
+            return board2.getBoardSize();
+        }
+        else {
+            return board1.getBoardSize();
+        }
+    }
     public int getNextPlacement(Player player) {
         if (player.equals(player1)) {
             return shipsToPlace1.get(0);
