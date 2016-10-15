@@ -10,6 +10,26 @@ public class Position {
         y = nY;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return (position.getX() == x && position.getY() == y);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return new String("[" + x + "," + y + "]");
+    }
+
     public int getX() {
         return x;
     }
