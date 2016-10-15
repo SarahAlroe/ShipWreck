@@ -41,7 +41,7 @@ public class GameLogic {
         board2 = new Board(boardSize);
         player1 = new Player("Player-1"); //TODO Replace with proper player class
         player1.start();
-        player2 = new Player("Player-1"); //TODO Replace with proper player class
+        player2 = new SimpleAIPlayer("Player-1");
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace1 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
@@ -204,6 +204,16 @@ public class GameLogic {
     }
 
     public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {
+        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
+    }
+
+    public ArrayList<Position> getPossibleEndPositions(Player player, Position pos, int length) {
+        Board board;
+        if (player.equals(player1)){
+            board=board1;
+        }
+        else {board=board2;}
+
         return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
     }
 
