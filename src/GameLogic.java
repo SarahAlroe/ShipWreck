@@ -42,7 +42,9 @@ public class GameLogic {
         player2 = new SimpleAIPlayer("Player-2");
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
-        shipsToPlace1 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
+        shipsToPlace2 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
+        System.out.println(shipsToPlace1.size());
+        System.out.println(shipsToPlace1.get(shipsToPlace1.size()-1));
         gameState = SETUP;
     }
 
@@ -88,6 +90,7 @@ public class GameLogic {
             boardToHit = board1;
         }
         int hit = boardToHit.tryHit(position);
+        if (hit==Board.SHIP){
         if (boardToHit.isCleared()) {
             gameState = GAMEOVER;
             if (player.equals(player1)) {
@@ -95,7 +98,8 @@ public class GameLogic {
             } else {
                 hasWon = 2;
             }
-        }
+        }}
+        switchActivePlayer();
         return hit;
         //TODO Find a way to make this independent of player count
     }
@@ -126,15 +130,16 @@ public class GameLogic {
     }
 
     public int getNextPlacement(Player player) {
-        if (player.equals(player1)) {
+        if (player.equals(player1) && shipsToPlace1.size()!=0) {
             return shipsToPlace1.get(0);
-        } else {
+        } else if(player.equals(player2) && shipsToPlace2.size()!=0) {
             return shipsToPlace2.get(0);
         }
+        else return 0;
     }
 
     public ArrayList<Position> getPlaceablePositions(Player player) {
-        if (player == player1) {
+        if (player.equals(player1)) {
             return getPlaceablePositions(board1);
         } else {
             return getPlaceablePositions(board2);
@@ -144,8 +149,8 @@ public class GameLogic {
 
     public ArrayList<Position> getPlaceablePositions(Board board) {
         ArrayList<Position> positions = new ArrayList<>();
-        for (int i = 0; i > board.getBoardSizeX(); i++) {
-            for (int j = 0; j > board.getBoardSizeY(); j++) {
+        for (int i = 0; i < board.getBoardSizeX(); i++) {
+            for (int j = 0; j < board.getBoardSizeY(); j++) {
                 if (board.getSegment(i, j) == Board.NOTHING) {
                     positions.add(new Position(i, j));
                 }
@@ -172,23 +177,23 @@ public class GameLogic {
         } else if (startPosition.getX() != endPosition.getX()) {
             int changePos = startPosition.getX() - endPosition.getX();
             if (changePos > 0) {
-                for (int i = 0; i < changePos; i++) {
-                    board.setSegment(startPosition.getX() + i, startPosition.getY(), Board.SHIP);
+                for (int i = 0; i <= changePos; i++) {
+                    board.setSegment(endPosition.getX() + i, startPosition.getY(), Board.SHIP);
                 }
             } else {
-                for (int i = 0; i > changePos; i--) {
-                    board.setSegment(startPosition.getX() + i, startPosition.getY(), Board.SHIP);
+                for (int i = 0; i >= changePos; i--) {
+                    board.setSegment(endPosition.getX() + i, startPosition.getY(), Board.SHIP);
                 }
             }
         } else if (startPosition.getY() != endPosition.getY()) {
             int changePos = startPosition.getY() - endPosition.getY();
             if (changePos > 0) {
-                for (int i = 0; i < changePos; i++) {
-                    board.setSegment(startPosition.getX(), startPosition.getY() + i, Board.SHIP);
+                for (int i = 0; i <= changePos; i++) {
+                    board.setSegment(startPosition.getX(), endPosition.getY() + i, Board.SHIP);
                 }
             } else {
-                for (int i = 0; i > changePos; i--) {
-                    board.setSegment(startPosition.getX(), startPosition.getY() + i, Board.SHIP);
+                for (int i = 0; i >= changePos; i--) {
+                    board.setSegment(startPosition.getX(), endPosition.getY() + i, Board.SHIP);
                 }
             }
         }
@@ -206,6 +211,7 @@ public class GameLogic {
     public void checkIfSetupDone() {
         if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
             gameState = PLAY;
+            switchActivePlayer();
         }
     }
 
@@ -255,10 +261,10 @@ public class GameLogic {
     }
 
     private boolean isWithinBorders(Position position, Board board) {
-        if (position.getX() < 0 || position.getX() > board.getBoardSizeX()) {
+        if (position.getX() < 0 || position.getX() > board.getBoardSizeX()-1) {
             return false;
         }
-        if (position.getY() < 0 || position.getY() > board.getBoardSizeY()) {
+        if (position.getY() < 0 || position.getY() > board.getBoardSizeY()-1) {
             return false;
         }
         return true;
@@ -269,6 +275,7 @@ public class GameLogic {
     }
 
     public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
+        length =length-1;
         ArrayList<Position> possiblePositions = new ArrayList<>();
 
         if (canBePlaced(new Position(x, y), new Position(x + length, y), board)) {
@@ -278,7 +285,7 @@ public class GameLogic {
             possiblePositions.add(new Position(x - length, y));
         }
         if (canBePlaced(new Position(x, y), new Position(x, y + length), board)) {
-            possiblePositions.add(new Position(x + length, y));
+            possiblePositions.add(new Position(x, y + length));
         }
         if (canBePlaced(new Position(x, y), new Position(x, y - length), board)) {
             possiblePositions.add(new Position(x, y - length));

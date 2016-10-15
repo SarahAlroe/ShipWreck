@@ -31,6 +31,13 @@ public class Board {
     }
 
     public void setSegment(int x, int y, int value) {
+        /*System.out.print(x);
+        System.out.print(",");
+        System.out.print(y);
+        System.out.print(" - ");
+        System.out.print(value);
+        System.out.print(" - ");
+        System.out.println(this.hashCode());*/
         boardContents[x][y] = value;
     }
 
