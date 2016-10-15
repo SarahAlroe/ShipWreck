@@ -1,4 +1,3 @@
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.ArrayList;
 
 /**
@@ -6,15 +5,14 @@ import java.util.ArrayList;
  */
 
 public class GameLogic {
-    //Singleton spooks
-    private static GameLogic gameLogic = new GameLogic();
     //GameLogic constants
     public static final int WAIT = 0;
     public static final int PRESETUP = 1;
     public static final int SETUP = 2;
     public static final int PLAY = 3;
     public static final int GAMEOVER = 4;
-
+    //Singleton spooks
+    private static GameLogic gameLogic = new GameLogic();
     private int boardSize = 10;
 
     private Board board1;
@@ -31,7 +29,7 @@ public class GameLogic {
     private int activePlayer = 0;
     private int hasWon = 0;
 
-    public static GameLogic getInstance(){
+    public static GameLogic getInstance() {
         return gameLogic;
     }
 
@@ -39,9 +37,9 @@ public class GameLogic {
         // load player and board, set gamestate
         board1 = new Board(boardSize);
         board2 = new Board(boardSize);
-        player1 = new Player("Player-1"); //TODO Replace with proper player class
+        player1 = new SimpleAIPlayer("Player-1"); //TODO Replace with proper player class
         player1.start();
-        player2 = new SimpleAIPlayer("Player-1");
+        player2 = new SimpleAIPlayer("Player-2");
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace1 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
@@ -118,14 +116,15 @@ public class GameLogic {
         }
         return false;
     }
-    public int[] getEnemyBoardSize(Player player){
-        if (player.equals(player1)){
+
+    public int[] getEnemyBoardSize(Player player) {
+        if (player.equals(player1)) {
             return board2.getBoardSize();
-        }
-        else {
+        } else {
             return board1.getBoardSize();
         }
     }
+
     public int getNextPlacement(Player player) {
         if (player.equals(player1)) {
             return shipsToPlace1.get(0);
@@ -165,7 +164,7 @@ public class GameLogic {
 
     public boolean placeShip(Position startPosition, Position endPosition, Board board) {
         //Check if can be placed, break if cant.
-        if (! canBePlaced(startPosition,endPosition,board)){
+        if (!canBePlaced(startPosition, endPosition, board)) {
             return false;
         }
         if (startPosition.equals(endPosition)) {
@@ -210,78 +209,43 @@ public class GameLogic {
         }
     }
 
-    public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {
-        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
-    }
-
-    public ArrayList<Position> getPossibleEndPositions(Player player, Position pos, int length) {
-        Board board;
-        if (player.equals(player1)){
-            board=board1;
-        }
-        else {board=board2;}
-
-        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
-    }
-
-    public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
-        ArrayList<Position> possiblePositions = new ArrayList<>();
-
-        if (canBePlaced(new Position(x,y),new Position(x+length,y),board)){
-            possiblePositions.add(new Position(x + length, y));
-        }
-        if (canBePlaced(new Position(x,y),new Position(x-length,y),board)){
-            possiblePositions.add(new Position(x - length, y));
-        }
-        if (canBePlaced(new Position(x,y),new Position(x,y+length),board)){
-            possiblePositions.add(new Position(x + length, y));
-        }
-        if (canBePlaced(new Position(x,y),new Position(x,y-length),board)){
-            possiblePositions.add(new Position(x, y - length));
-        }
-        return possiblePositions;
-    }
-
-    public boolean canBePlaced(Position firstPos, Position lastPos, Board board){
+    public boolean canBePlaced(Position firstPos, Position lastPos, Board board) {
         //Check if within borders
-        if (! isWithinBorders(firstPos, board)) return false;
-        if (! isWithinBorders(lastPos, board)) return false;
+        if (!isWithinBorders(firstPos, board)) return false;
+        if (!isWithinBorders(lastPos, board)) return false;
         //Check if single block ship, and ok.
-        if (firstPos.equals(lastPos) && board.getSegment(firstPos)==Board.NOTHING){
+        if (firstPos.equals(lastPos) && board.getSegment(firstPos) == Board.NOTHING) {
             return true;
         }
         //Check each position the ship is going to be on.
-        else if (firstPos.getX() < lastPos.getX()){
-            int xLength = lastPos.getX()-firstPos.getX();
+        else if (firstPos.getX() < lastPos.getX()) {
+            int xLength = lastPos.getX() - firstPos.getX();
             for (int i = 0; i < xLength; i++) {
-                if (board.getSegment(firstPos.getX()+i, firstPos.getY())!=Board.NOTHING){
+                if (board.getSegment(firstPos.getX() + i, firstPos.getY()) != Board.NOTHING) {
                     return false;
                 }
             }
             return true;
-        }
-        else if (firstPos.getX() > lastPos.getX()){
-            int xLength = firstPos.getX()-lastPos.getX();
+        } else if (firstPos.getX() > lastPos.getX()) {
+            int xLength = firstPos.getX() - lastPos.getX();
             for (int i = 0; i < xLength; i++) {
-                if (board.getSegment(lastPos.getX()+i, firstPos.getY())!=Board.NOTHING){
+                if (board.getSegment(lastPos.getX() + i, firstPos.getY()) != Board.NOTHING) {
                     return false;
                 }
             }
             return true;
-        }
-        else if (firstPos.getY() < lastPos.getY()){
-            int yLength = lastPos.getY()-firstPos.getY();
+        } else if (firstPos.getY() < lastPos.getY()) {
+            int yLength = lastPos.getY() - firstPos.getY();
             for (int i = 0; i < yLength; i++) {
-                if (board.getSegment(firstPos.getX(), firstPos.getY()+i)!=Board.NOTHING){
+                if (board.getSegment(firstPos.getX(), firstPos.getY() + i) != Board.NOTHING) {
                     return false;
                 }
             }
             return true;
-        }
-        else if (firstPos.getY() > lastPos.getY()){
-            int yLength = firstPos.getY()-lastPos.getY();
+        } else if (firstPos.getY() > lastPos.getY()) {
+            int yLength = firstPos.getY() - lastPos.getY();
             for (int i = 0; i < yLength; i++) {
-                if (board.getSegment(firstPos.getX(), lastPos.getY()+i)!=Board.NOTHING){
+                if (board.getSegment(firstPos.getX(), lastPos.getY() + i) != Board.NOTHING) {
                     return false;
                 }
             }
@@ -291,13 +255,46 @@ public class GameLogic {
     }
 
     private boolean isWithinBorders(Position position, Board board) {
-        if(position.getX()<0 || position.getX()>board.getBoardSizeX()){
+        if (position.getX() < 0 || position.getX() > board.getBoardSizeX()) {
             return false;
         }
-        if(position.getY()<0 || position.getY()>board.getBoardSizeY()){
+        if (position.getY() < 0 || position.getY() > board.getBoardSizeY()) {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {
+        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
+    }
+
+    public ArrayList<Position> getPossibleEndPositions(Board board, int x, int y, int length) {
+        ArrayList<Position> possiblePositions = new ArrayList<>();
+
+        if (canBePlaced(new Position(x, y), new Position(x + length, y), board)) {
+            possiblePositions.add(new Position(x + length, y));
+        }
+        if (canBePlaced(new Position(x, y), new Position(x - length, y), board)) {
+            possiblePositions.add(new Position(x - length, y));
+        }
+        if (canBePlaced(new Position(x, y), new Position(x, y + length), board)) {
+            possiblePositions.add(new Position(x + length, y));
+        }
+        if (canBePlaced(new Position(x, y), new Position(x, y - length), board)) {
+            possiblePositions.add(new Position(x, y - length));
+        }
+        return possiblePositions;
+    }
+
+    public ArrayList<Position> getPossibleEndPositions(Player player, Position pos, int length) {
+        Board board;
+        if (player.equals(player1)) {
+            board = board1;
+        } else {
+            board = board2;
+        }
+
+        return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
     }
 
 }
