@@ -24,7 +24,7 @@ public class GameLogic {
     private ArrayList<Integer> shipsToPlace1 = new ArrayList<>();
     private ArrayList<Integer> shipsToPlace2 = new ArrayList<>();
 
-    private int gameState = PRESETUP;
+    private GameState gameState = GameState.PRESETUP;
 
     private int activePlayer = 0;
     private int hasWon = 0;
@@ -43,7 +43,7 @@ public class GameLogic {
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace2 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
-        gameState = SETUP;
+        gameState = GameState.SETUP;
     }
 
     private ArrayList<Integer> generateShipsFromBoardSize(int maxX, int maxY) {
@@ -60,21 +60,21 @@ public class GameLogic {
         return ships;
     }
 
-    public int getNextAction(Player player) {
-        if (gameState == PRESETUP) {
-            return WAIT;
-        } else if (gameState == PLAY) {
+    public GameState getNextState(Player player) {
+        if (gameState == GameState.PRESETUP) {
+            return GameState.WAIT;
+        } else if (gameState == GameState.PLAY) {
             if (player.equals(player1)) {
                 if (activePlayer == 1) {
-                    return PLAY;
+                    return GameState.PLAY;
                 } else {
-                    return WAIT;
+                    return GameState.WAIT;
                 }
             } else {
                 if (activePlayer == 2) {
-                    return PLAY;
+                    return GameState.PLAY;
                 } else {
-                    return WAIT;
+                    return GameState.WAIT;
                 }
             }
         } else return gameState;
@@ -90,7 +90,7 @@ public class GameLogic {
         int hit = boardToHit.tryHit(position);
         if (hit == Board.SHIP) {
             if (boardToHit.isCleared()) {
-                gameState = GAMEOVER;
+                gameState = GameState.GAMEOVER;
                 if (player.equals(player1)) {
                     hasWon = 1;
                 } else {
@@ -208,7 +208,7 @@ public class GameLogic {
 
     public void checkIfSetupDone() {
         if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
-            gameState = PLAY;
+            gameState = GameState.PLAY;
             switchActivePlayer();
         }
     }

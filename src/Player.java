@@ -14,18 +14,18 @@ public abstract class Player implements Runnable {
     public void run() {
         gameLogic = GameLogic.getInstance();
         while (true) {
-            int currentAction = gameLogic.getNextAction(this);
-            if (currentAction == GameLogic.WAIT || currentAction == GameLogic.PRESETUP) {
+            GameState nextState = gameLogic.getNextState(this);
+            if (nextState == GameState.WAIT || nextState == GameState.PRESETUP) {
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } else if (currentAction == GameLogic.SETUP) {
+            } else if (nextState == GameState.SETUP) {
                 placeAShip();
-            } else if (currentAction == GameLogic.PLAY) {
+            } else if (nextState == GameState.PLAY) {
                 makeAMove();
-            } else if (currentAction == GameLogic.GAMEOVER) {
+            } else if (nextState == GameState.GAMEOVER) {
                 endGame();
                 break;
             }
