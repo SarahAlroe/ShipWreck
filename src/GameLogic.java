@@ -302,4 +302,11 @@ public class GameLogic {
         return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
     }
 
+    public int[] getPlayerBoardSize(Player player) {
+        if (player.equals(player1)){
+            return board1.getBoardSize();
+        }else{
+            return board2.getBoardSize();
+        }
+    }
 }
