@@ -14,20 +14,22 @@ public class Graphics {
     }
 
     public void drawGrid(int[] boardSize, int board) {
-
+        //Draw a board of boardsize, on position board (0,1)
     }
 
     public void highlightBoardSquares(ArrayList<Position> positions, int board) {
-
+        //Highlight specific positions on a board
     }
 
-    public void pushText(String s) {
+    public void pushText(String text) {
+        //Show some text on the screen
     }
 
-    public void clearBoardHighlights(int i) {
+    public void clearBoardHighlights(int board) {
+        //Remove all the set highlights on a board.
     }
 
     public void markBoard(Position markPos, int markType, int board) {
-
+        //Mark a position on a board as some kind of hit
     }
 }
