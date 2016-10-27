@@ -26,4 +26,8 @@ public class Graphics {
 
     public void clearBoardHighlights(int i) {
     }
+
+    public void markBoard(Position markPos, int markType, int board) {
+
+    }
 }
