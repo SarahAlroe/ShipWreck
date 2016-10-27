@@ -52,5 +52,10 @@ public class SimpleAIPlayer extends Player {
 
     }
 
+    @Override
+    public void hitByEnemy(Position hitPosition, int hitType) {
+        //Don rly do anyting
+    }
+
 
 }

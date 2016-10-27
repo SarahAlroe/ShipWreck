@@ -48,6 +48,20 @@ public class RealPlayer extends Player {
         }
     }
 
+    @Override
+    public void hitByEnemy(Position hitPosition, int hitType) {
+        graphics.markBoard(hitPosition, hitType, 0);
+        if (hitType == Board.NOTHING) {
+            graphics.pushText("Enemy hit nothing...");
+        } else if (hitType == Board.SHIP) {
+            graphics.pushText("Enemy hit one of your ships!");
+        } else if (hitType == Board.HIT_NOTHING) {
+            graphics.pushText("Enemy hit nothing");
+        } else if (hitType == Board.HIT_SHIP) {
+            graphics.pushText("Enemy hit one of your ships, but it was already hit.");
+        }
+    }
+
     void handleClick(Position position, int board) {
         if (gameLogic.getNextState(this) == GameState.SETUP && board == 0) {
             if (!startPositionChosen) {
@@ -59,13 +73,13 @@ public class RealPlayer extends Player {
             int hitResult = gameLogic.tryHitFrom(position, this);
             graphics.markBoard(position, hitResult, 1);
             if (hitResult == Board.NOTHING) {
-                graphics.pushText("Enemy hit nothing...");
+                graphics.pushText("You hit nothing...");
             } else if (hitResult == Board.SHIP) {
-                graphics.pushText("Enemy hit one of your ships!");
+                graphics.pushText("You hit one of their ships!");
             } else if (hitResult == Board.HIT_NOTHING) {
-                graphics.pushText("Enemy hit an already hit nothing");
+                graphics.pushText("You hit nothing... again.");
             } else if (hitResult == Board.HIT_SHIP) {
-                graphics.pushText("Enemy hit one of your ships, but it was already hit.");
+                graphics.pushText("You hit one of their ships, but it was already hit.");
             }
         }
     }
