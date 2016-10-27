@@ -44,4 +44,6 @@ public abstract class Player implements Runnable {
             t.start();
         }
     }
+
+    public abstract void hitByEnemy(Position hitPosition, int hitType);
 }

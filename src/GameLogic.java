@@ -82,12 +82,16 @@ public class GameLogic {
 
     public int tryHitFrom(Position position, Player player) {
         Board boardToHit;
+        Player hitPlayer;
         if (player.equals(player1)) {
             boardToHit = board2;
+            hitPlayer = player2;
         } else {
             boardToHit = board1;
+            hitPlayer = player1;
         }
         int hit = boardToHit.tryHit(position);
+        hitPlayer.hitByEnemy(position, hit);
         if (hit == Board.SHIP) {
             if (boardToHit.isCleared()) {
                 gameState = GameState.GAMEOVER;
