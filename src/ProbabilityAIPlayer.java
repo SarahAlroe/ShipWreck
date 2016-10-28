@@ -3,28 +3,41 @@ import java.util.ArrayList;
 /**
  * Created by silasa on 10/27/16.
  */
-public class SmartAIPlayer extends Player {
-    SmartAIPlayer(String name) {
+public class ProbabilityAIPlayer extends Player {
+    ArrayList<Integer> ships;
+    private boolean isFistMove = true;
+    private int[] enemyBoardSize;
+    private int largestShip = 0;
+    private Board enemyBoard;
+    private Board enemyProbabilityBoard;
+
+    ProbabilityAIPlayer(String name) {
         super(name);
     }
 
     protected void endGame() {
         if (gameLogic.getIsWinner(this)) {
-            System.out.println("YES! I AM " + threadName + " and i won the game!");
+            System.out.println("Smarty mc smartypants " + threadName + " does it again!");
         } else {
-            System.out.println("aww... " + threadName + " lost the game");
+            System.out.println("HOW? How could i loose, " + threadName + "?! It's the RNG's fault!");
         }
     }
 
     protected void makeAMove() {
-        int[] enemyBoardSize = gameLogic.getEnemyBoardSize(this);
+        if (isFistMove) {
+            isFistMove = false;
+            enemyBoardSize = gameLogic.getEnemyBoardSize(this);
+            enemyBoard = new Board(enemyBoardSize[0]);
+            for (int shipLength : ships) {
+                if (shipLength > largestShip) {
+                    largestShip = shipLength;
+                }
+            }
+        }
+
+
         Position target = new Position((int) (enemyBoardSize[0] * Math.random()), (int) (enemyBoardSize[1] * Math.random()));
-        int whatHit = gameLogic.tryHitFrom(target, this);
-        if (whatHit == Board.SHIP) {
-            System.out.println(threadName + " hit something");
-        } /*else {
-            System.out.println(threadName + " hit nothing or something again..");
-        }*/
+        gameLogic.tryHitFrom(target, this);
     }
 
     protected void placeAShip() {
@@ -45,7 +58,7 @@ public class SmartAIPlayer extends Player {
                 chosenEndPos = possibleEndPositions.get((int) (Math.random() * possibleEndPositions.size()));
             }
             if (gameLogic.placeShip(chosenPos, chosenEndPos, this)) {
-                //System.out.println(chosenPos);
+                ships.add(shipLength);
                 break;
             }
         }
