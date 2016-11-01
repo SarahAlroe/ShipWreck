@@ -3,7 +3,7 @@
  */
 public class ShipWreck {
     public static void main(String[] args) {
-        GameLogic.getInstance().setup();
+        //GameLogic.getInstance().setup();
         Graphics graphics=Graphics.getInstance();
     }
 }
