@@ -1,5 +1,9 @@
 import java.util.ArrayList;
-
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 /**
  * Created by silasa on 10/25/16.
  */
@@ -11,6 +15,18 @@ public class Graphics {
     }
 
     private Graphics() {
+        // Create the window
+        JFrame f = new JFrame("Shipwreck");
+        f.setSize(800,600);
+        // Sets the behavior for when the window is closed
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Add a layout manager so that the button is not placed on top of the label
+        f.setLayout(new FlowLayout());
+        // Arrange the components inside the window
+        f.pack();
+        // By default, the window is not visible. Make it visible.
+        f.setVisible(true);
+        f.add(new JButton("Play"));
     }
 
     public void drawGrid(int[] boardSize, int board) {

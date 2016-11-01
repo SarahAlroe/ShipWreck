@@ -4,5 +4,6 @@
 public class ShipWreck {
     public static void main(String[] args) {
         GameLogic.getInstance().setup();
+        Graphics graphics=Graphics.getInstance();
     }
 }
