@@ -4,7 +4,7 @@
 public abstract class Player implements Runnable {
     protected GameLogic gameLogic;
     protected String threadName;
-    protected long sleepTime = 10;
+    protected long sleepTime = Config.getInstance().getPlayerSleepTime();
     private Thread t;
 
     Player(String name) {

@@ -15,11 +15,9 @@ public class Graphics {
         return ourInstance;
     }
 
-    public int HorizontalWindowRes = 800;
-    public int VerticalWindowRes = 600;
-
     public JFrame a;
     public JButton button;
+    Config config = Config.getInstance();
 
     private Graphics() {
         // Create the window
@@ -30,7 +28,7 @@ public class Graphics {
         a.setLayout(new FlowLayout());
         // Arrange the components inside the window
         a.pack();
-        a.setSize(HorizontalWindowRes,VerticalWindowRes);
+        a.setSize(config.getHRes(),config.getVRes());
         // By default, the window is not visible. Make it visible.
         a.setVisible(true);
         button = new JButton("Play");

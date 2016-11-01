@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class GameLogic {
     //Singleton spooks
     private static GameLogic gameLogic = new GameLogic();
-    private int boardSize = 10;
+    private int boardSize = Config.getInstance().getBoardSize();
 
     private Board board1;
     private Board board2;
