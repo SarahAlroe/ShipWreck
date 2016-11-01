@@ -15,6 +15,9 @@ public class Graphics {
         return ourInstance;
     }
 
+    public int HorizontalWindowRes = 800;
+    public int VerticalWindowRes = 600;
+
     private Graphics() {
         // Create the window
         JFrame a = new JFrame("Shipwreck");
@@ -24,7 +27,7 @@ public class Graphics {
         a.setLayout(new FlowLayout());
         // Arrange the components inside the window
         a.pack();
-        a.setSize(800,600);
+        a.setSize(HorizontalWindowRes,VerticalWindowRes);
         // By default, the window is not visible. Make it visible.
         a.setVisible(true);
         JButton button = new JButton("Play");
