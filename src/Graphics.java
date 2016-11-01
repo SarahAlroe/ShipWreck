@@ -1,8 +1,8 @@
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
-import java.awt.FlowLayout;
 import javax.swing.*;
 
 /**
@@ -15,21 +15,33 @@ public class Graphics {
         return ourInstance;
     }
 
+    public int HorizontalWindowRes = 800;
+    public int VerticalWindowRes = 600;
+
+    public JFrame a;
+    public JButton button;
+
     private Graphics() {
         // Create the window
-        JFrame a = new JFrame("Shipwreck");
+        a = new JFrame("Shipwreck");
         // Sets the behavior for when the window is closed
         a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Add a layout manager so that the button is not placed on top of the label
         a.setLayout(new FlowLayout());
         // Arrange the components inside the window
         a.pack();
-        a.setSize(800,600);
+        a.setSize(HorizontalWindowRes,VerticalWindowRes);
         // By default, the window is not visible. Make it visible.
         a.setVisible(true);
-        JButton button = new JButton("Play");
-        button.addActionListener(new MyAction());
+        button = new JButton("Play");
         a.add(button);
+        button.addActionListener(new MyAction());
+
+    }
+    public void removePlayButton(){
+        a.remove(button);
+        a.revalidate();
+        a.repaint();
     }
 
     public void drawGrid(int[] boardSize, int board) {
@@ -55,5 +67,6 @@ public class Graphics {
 class MyAction extends MouseAdapter implements ActionListener {
     public void actionPerformed(ActionEvent ae){
         GameLogic.getInstance().setup();
+        Graphics.getInstance().removePlayButton();
     }
 }
