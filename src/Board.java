@@ -2,7 +2,7 @@
  * Created by alman on 10/4/16.
  */
 public class Board {
-    //Board constants
+    //Board enums
     public static final int NOTHING = 0;
     public static final int SHIP = 1;
     public static final int HIT_NOTHING = 3;
@@ -31,13 +31,6 @@ public class Board {
     }
 
     public void setSegment(int x, int y, int value) {
-        /*System.out.print(x);
-        System.out.print(",");
-        System.out.print(y);
-        System.out.print(" - ");
-        System.out.print(value);
-        System.out.print(" - ");
-        System.out.println(this.hashCode());*/
         boardContents[x][y] = value;
     }
 

@@ -5,12 +5,6 @@ import java.util.ArrayList;
  */
 
 public class GameLogic {
-    //GameLogic constants
-    public static final int WAIT = 0;
-    public static final int PRESETUP = 1;
-    public static final int SETUP = 2;
-    public static final int PLAY = 3;
-    public static final int GAMEOVER = 4;
     //Singleton spooks
     private static GameLogic gameLogic = new GameLogic();
     private int boardSize = 10;
@@ -46,7 +40,7 @@ public class GameLogic {
         gameState = GameState.SETUP;
     }
 
-    private ArrayList<Integer> generateShipsFromBoardSize(int maxX, int maxY) {
+    public ArrayList<Integer> generateShipsFromBoardSize(int maxX, int maxY) {
         ArrayList<Integer> ships = new ArrayList<>();
         int boardSize = maxX * maxY;
         double[] shipAmount = {0.03, 0.02, 0.01, 0.005, 0.001};// Amount of [n+1] ships per square
@@ -81,15 +75,8 @@ public class GameLogic {
     }
 
     public int tryHitFrom(Position position, Player player) {
-        Board boardToHit;
-        Player hitPlayer;
-        if (player.equals(player1)) {
-            boardToHit = board2;
-            hitPlayer = player2;
-        } else {
-            boardToHit = board1;
-            hitPlayer = player1;
-        }
+        Board boardToHit = getOppositeBoard(player);
+        Player hitPlayer = getOppositePlayer(player);
         int hit = boardToHit.tryHit(position);
         hitPlayer.hitByEnemy(position, hit);
         if (hit == Board.SHIP) {
@@ -107,11 +94,31 @@ public class GameLogic {
         //TODO Find a way to make this independent of player count
     }
 
+    private Board getOppositeBoard(Player player) {
+        return getPlayerBoard(getOppositePlayer(player));
+    }
+
+    private Player getOppositePlayer(Player player) {
+        if (player1.equals(player)) {
+            return player2;
+        } else {
+            return player1;
+        }
+    }
+
     public void switchActivePlayer() {
         if (activePlayer == 1) {
             activePlayer = 2;
         } else {
             activePlayer = 1;
+        }
+    }
+
+    private Board getPlayerBoard(Player player) {
+        if (player.equals(player1)) {
+            return board1;
+        } else {
+            return board2;
         }
     }
 
@@ -125,11 +132,7 @@ public class GameLogic {
     }
 
     public int[] getEnemyBoardSize(Player player) {
-        if (player.equals(player1)) {
-            return board2.getBoardSize();
-        } else {
-            return board1.getBoardSize();
-        }
+        return getOppositeBoard(player).getBoardSize();
     }
 
     public int getNextPlacement(Player player) {
@@ -141,12 +144,7 @@ public class GameLogic {
     }
 
     public ArrayList<Position> getPlaceablePositions(Player player) {
-        if (player.equals(player1)) {
-            return getPlaceablePositions(board1);
-        } else {
-            return getPlaceablePositions(board2);
-        }
-
+        return getPlaceablePositions(getPlayerBoard(player));
     }
 
     public ArrayList<Position> getPlaceablePositions(Board board) {
@@ -162,11 +160,7 @@ public class GameLogic {
     }
 
     public boolean placeShip(Position startPosition, Position endPosition, Player player) {
-        if (player.equals(player1)) {
-            return placeShip(startPosition, endPosition, board1);
-        } else {
-            return placeShip(startPosition, endPosition, board2);
-        }
+        return placeShip(startPosition, endPosition, getPlayerBoard(player));
     }
 
     public boolean placeShip(Position startPosition, Position endPosition, Board board) {
@@ -208,13 +202,6 @@ public class GameLogic {
         //Check if we are done placing ships
         checkIfSetupDone();
         return true;
-    }
-
-    public void checkIfSetupDone() {
-        if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
-            gameState = GameState.PLAY;
-            switchActivePlayer();
-        }
     }
 
     public boolean canBePlaced(Position firstPos, Position lastPos, Board board) {
@@ -262,6 +249,13 @@ public class GameLogic {
         return false;
     }
 
+    public void checkIfSetupDone() {
+        if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
+            gameState = GameState.PLAY;
+            switchActivePlayer();
+        }
+    }
+
     private boolean isWithinBorders(Position position, Board board) {
         if (position.getX() < 0 || position.getX() > board.getBoardSizeX() - 1) {
             return false;
@@ -296,21 +290,11 @@ public class GameLogic {
     }
 
     public ArrayList<Position> getPossibleEndPositions(Player player, Position pos, int length) {
-        Board board;
-        if (player.equals(player1)) {
-            board = board1;
-        } else {
-            board = board2;
-        }
-
+        Board board = getPlayerBoard(player);
         return getPossibleEndPositions(board, pos.getX(), pos.getY(), length);
     }
 
     public int[] getPlayerBoardSize(Player player) {
-        if (player.equals(player1)){
-            return board1.getBoardSize();
-        }else{
-            return board2.getBoardSize();
-        }
+        return getPlayerBoard(player).getBoardSize();
     }
 }

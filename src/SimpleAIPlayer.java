@@ -45,7 +45,6 @@ public class SimpleAIPlayer extends Player {
                 chosenEndPos = possibleEndPositions.get((int) (Math.random() * possibleEndPositions.size()));
             }
             if (gameLogic.placeShip(chosenPos, chosenEndPos, this)) {
-                //System.out.println(chosenPos);
                 break;
             }
         }
@@ -54,7 +53,7 @@ public class SimpleAIPlayer extends Player {
 
     @Override
     public void hitByEnemy(Position hitPosition, int hitType) {
-        //Don rly do anyting
+        //Don't do anything
     }
 
 
