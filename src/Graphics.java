@@ -64,7 +64,8 @@ public class Graphics {
         //Mark a position on a board as some kind of hit
     }
 }
-class MyAction extends MouseAdapter implements ActionListener {
+//Myaction calls on gamelogic when the actionlistener is triggered along with removing the button afterwards.
+class MyAction implements ActionListener {
     public void actionPerformed(ActionEvent ae){
         GameLogic.getInstance().setup();
         Graphics.getInstance().removePlayButton();
