@@ -31,7 +31,7 @@ public class GameLogic {
         // load player and board, set gamestate
         board1 = new Board(boardSize);
         board2 = new Board(boardSize);
-        player1 = new SimpleAIPlayer("Player-1"); //TODO Replace with proper player class
+        player1 = new ProbabilityAIPlayer("Player-1"); //TODO Replace with proper player class
         player1.start();
         player2 = new SimpleAIPlayer("Player-2");
         player2.start();

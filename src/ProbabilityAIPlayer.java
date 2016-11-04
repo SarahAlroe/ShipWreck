@@ -5,7 +5,7 @@ import java.util.Collections;
  * Created by silasa on 10/27/16.
  */
 public class ProbabilityAIPlayer extends Player {
-    ArrayList<Integer> myShips;
+    ArrayList<Integer> myShips = new ArrayList<>();
     private boolean isFistMove = true;
     private int[] enemyBoardSize;
     private Board enemyBoard;
@@ -31,7 +31,7 @@ public class ProbabilityAIPlayer extends Player {
         }
         enemyProbabilityBoard = generateProbabilityBoard(enemyBoard);
         ArrayList<Position> possiblePositions = getMostProbablePositions(enemyProbabilityBoard);
-        Position target = possiblePositions.get((int)Math.round(Math.random()*possiblePositions.size()));
+        Position target = possiblePositions.get((int)Math.floor(Math.random()*possiblePositions.size()));
         int result = gameLogic.tryHitFrom(target, this);
         enemyBoard.setSegment(target, result);
     }
@@ -53,7 +53,8 @@ public class ProbabilityAIPlayer extends Player {
         int width = board.getBoardSizeX();
         int height = board.getBoardSizeY();
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; i++) {
+            for (int j = 0; j < height; j++) {
+                board.setSegment(i,j,0);
                 if (board.getSegment(i,j)==Board.NOTHING){
                     for (int k=0;k<largestShip;k++){ //+x
                         if (board.getSegment(i+k,j)==Board.HIT_NOTHING){
@@ -126,8 +127,8 @@ public class ProbabilityAIPlayer extends Player {
         int[][] usedPos = new int[width][height];
 
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; i++) {
-                if (usedPos[width][height] != 1) {
+            for (int j = 0; j < height; j++) {
+                if (usedPos[i][j] != 1) {
                     if (board.getSegment(i, j) == Board.SHIP) {
                         int cShip = 1;
                         if (board.getSegment(i + 1, j) == Board.SHIP) {
@@ -166,7 +167,7 @@ public class ProbabilityAIPlayer extends Player {
         int height = board.getBoardSizeY();
 
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; i++) {
+            for (int j = 0; j < height; j++) {
                 if (board.getSegment(i, j) > largestProb) {
                     positions.clear();
                     positions.add(new Position(i, j));

@@ -23,7 +23,10 @@ public class Board {
     }
 
     public int getSegment(int x, int y) {
-        return boardContents[x][y];
+        if (x < boardSizeX && x >= 0 && y < boardSizeY && y >= 0) {
+            return boardContents[x][y];
+        }
+        return NOTHING;
     }
 
     public void setSegment(Position position, int value) {
@@ -31,7 +34,9 @@ public class Board {
     }
 
     public void setSegment(int x, int y, int value) {
-        boardContents[x][y] = value;
+        if (x < boardSizeX && x >= 0 && y < boardSizeY && y >= 0) {
+            boardContents[x][y] = value;
+        }
     }
 
     public int[] getBoardSize() {
