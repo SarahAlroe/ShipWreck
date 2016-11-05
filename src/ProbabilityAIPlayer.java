@@ -10,6 +10,7 @@ public class ProbabilityAIPlayer extends Player {
     private int[] enemyBoardSize;
     private Board enemyBoard;
     private Board enemyProbabilityBoard;
+    private int moveCounter = 0;
 
     ProbabilityAIPlayer(String name) {
         super(name);
@@ -33,29 +34,35 @@ public class ProbabilityAIPlayer extends Player {
         ArrayList<Position> possiblePositions = getMostProbablePositions(enemyProbabilityBoard);
         Position target = possiblePositions.get((int) Math.floor(Math.random() * possiblePositions.size()));
         int result = gameLogic.tryHitFrom(target, this);
+        if (result == Board.NOTHING) {
+            result = Board.HIT_NOTHING;
+        }
         enemyBoard.setSegment(target, result);
+        //BoardVisualiser.generateImage(enemyProbabilityBoard, Integer.toString(moveCounter));
+        moveCounter += 1;
     }
 
     private Board generateProbabilityBoard(Board board) {
+        Board probBoard = new Board(board.getBoardSizeX());
         ArrayList<Integer> cShips = findShips(board);
-        ArrayList<Integer> missingShips = removeFrom(cShips, myShips);
+        ArrayList<Integer> missingShips = removeFrom(myShips, cShips);
         int largestShip = getLargest(missingShips);
         int width = board.getBoardSizeX();
         int height = board.getBoardSizeY();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                board.setSegment(i, j, 0);
+                probBoard.setSegment(i, j, 0);
                 if (board.getSegment(i, j) == Board.NOTHING) {
                     for (int k = 0; k < largestShip; k++) { //+x
                         if (board.getSegment(i + k, j) == Board.HIT_NOTHING) {
                             break;
                         } else if (board.getSegment(i + k, j) == Board.NOTHING) {
                             int fieldValue = Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i + k, j) == Board.SHIP || board.getSegment(i + k, j) == Board.HIT_SHIP) {
                             int modValue = 2; //TODO Make dependent on ship orientation.
                             int fieldValue = modValue * Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         }
                     }
                     for (int k = 0; k < largestShip; k++) { //+y
@@ -63,11 +70,11 @@ public class ProbabilityAIPlayer extends Player {
                             break;
                         } else if (board.getSegment(i, j + k) == Board.NOTHING) {
                             int fieldValue = Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j + k) == Board.SHIP || board.getSegment(i, j + k) == Board.HIT_SHIP) {
                             int modValue = 2; //TODO Make dependent on ship orientation.
                             int fieldValue = modValue * Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         }
                     }
                     for (int k = 0; k < largestShip; k++) { //-x
@@ -75,11 +82,11 @@ public class ProbabilityAIPlayer extends Player {
                             break;
                         } else if (board.getSegment(i - k, j) == Board.NOTHING) {
                             int fieldValue = Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i - k, j) == Board.SHIP || board.getSegment(i - k, j) == Board.HIT_SHIP) {
                             int modValue = 2; //TODO Make dependent on ship orientation.
                             int fieldValue = modValue * Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         }
                     }
                     for (int k = 0; k < largestShip; k++) { //-y
@@ -87,17 +94,17 @@ public class ProbabilityAIPlayer extends Player {
                             break;
                         } else if (board.getSegment(i, j - k) == Board.NOTHING) {
                             int fieldValue = Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j - k) == Board.SHIP || board.getSegment(i, j - k) == Board.HIT_SHIP) {
                             int modValue = 2; //TODO Make dependent on ship orientation.
                             int fieldValue = modValue * Collections.frequency(missingShips, new Integer(k + 1)) + board.getSegment(i, j);
-                            board.setSegment(i, j, fieldValue);
+                            probBoard.addSegment(i, j, fieldValue);
                         }
                     }
                 }
             }
         }
-        return board;
+        return probBoard;
     }
 
     private ArrayList<Position> getMostProbablePositions(Board board) {
@@ -111,6 +118,7 @@ public class ProbabilityAIPlayer extends Player {
                 if (board.getSegment(i, j) > largestProb) {
                     positions.clear();
                     positions.add(new Position(i, j));
+                    largestProb = board.getSegment(i, j);
                 } else if (board.getSegment(i, j) == largestProb) {
                     positions.add(new Position(i, j));
                 }

@@ -39,6 +39,12 @@ public class Board {
         }
     }
 
+    public void addSegment(int x, int y, int value) {
+        if (x < boardSizeX && x >= 0 && y < boardSizeY && y >= 0) {
+            boardContents[x][y] += value;
+        }
+    }
+
     public int[] getBoardSize() {
         return new int[]{getBoardSizeX(), getBoardSizeY()};
     }
@@ -62,13 +68,10 @@ public class Board {
         int segment = getSegment(x, y);
         if (segment == SHIP) {
             setSegment(x, y, HIT_SHIP);
-            return SHIP;
         } else if (segment == NOTHING) {
             setSegment(x, y, HIT_NOTHING);
-            return NOTHING;
-        } else {
-            return segment;
         }
+        return segment;
     }
 
     public boolean isCleared() {
