@@ -2,11 +2,11 @@
  * Created by silasa on 10/25/16.
  */
 public class RealPlayer extends Player {
-    Graphics graphics;
-    boolean isNew;
-    boolean waitingForHuman = false;
-    Position startPosition;
-    boolean startPositionChosen = false;
+    private Graphics graphics;
+    private boolean isNew;
+    private boolean waitingForHuman = false;
+    private Position startPosition;
+    private boolean startPositionChosen = false;
 
     RealPlayer(String name) {
         super(name);

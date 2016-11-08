@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -15,9 +14,9 @@ public class Graphics {
         return ourInstance;
     }
 
-    public JFrame a;
-    public JButton button;
-    Config config = Config.getInstance();
+    private JFrame a;
+    private JButton button;
+    private Config config = Config.getInstance();
 
     private Graphics() {
         // Create the window
