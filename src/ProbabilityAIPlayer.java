@@ -39,7 +39,7 @@ public class ProbabilityAIPlayer extends Player {
             result = Board.HIT_NOTHING;
         }
         enemyBoard.setSegment(target, result);
-        //BoardVisualiser.generateImage(enemyProbabilityBoard, Integer.toString(moveCounter));
+        BoardVisualiser.generateImage(enemyProbabilityBoard, Integer.toString(moveCounter));
         moveCounter += 1;
     }
 
@@ -63,7 +63,10 @@ public class ProbabilityAIPlayer extends Player {
                             int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i + k, j) == Board.SHIP || board.getSegment(i + k, j) == Board.HIT_SHIP) {
-                            float modValue = orientationBoard.getSegment(i+k,j)/intMultiplier;
+                            float modValue = 0;
+                            if (orientationBoard.getSegment(i+k,j)>0){
+                                modValue = orientationBoard.getSegment(i+k,j)/intMultiplier;
+                            }
                             int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
@@ -75,7 +78,10 @@ public class ProbabilityAIPlayer extends Player {
                             int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j + k) == Board.SHIP || board.getSegment(i, j + k) == Board.HIT_SHIP) {
-                            float modValue = orientationBoard.getSegment(i,j+k)/intMultiplier;
+                            float modValue = 0;
+                            if (orientationBoard.getSegment(i,j+k)<0){
+                                modValue = orientationBoard.getSegment(i,j+k)/intMultiplier*-1;
+                            }
                             int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
@@ -87,7 +93,10 @@ public class ProbabilityAIPlayer extends Player {
                             int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i - k, j) == Board.SHIP || board.getSegment(i - k, j) == Board.HIT_SHIP) {
-                            float modValue = orientationBoard.getSegment(i-k,j)/intMultiplier;
+                            float modValue = 0;
+                            if (orientationBoard.getSegment(i-k,j)>0){
+                                modValue = orientationBoard.getSegment(i-k,j)/intMultiplier;
+                            }
                             int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
@@ -99,7 +108,10 @@ public class ProbabilityAIPlayer extends Player {
                             int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j - k) == Board.SHIP || board.getSegment(i, j - k) == Board.HIT_SHIP) {
-                            float modValue = orientationBoard.getSegment(i,j-k)/intMultiplier;
+                            float modValue = 0;
+                            if (orientationBoard.getSegment(i,j-k)<0){
+                                modValue = orientationBoard.getSegment(i,j-k)/intMultiplier*-1;
+                            }
                             int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
