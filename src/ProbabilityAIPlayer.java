@@ -11,6 +11,7 @@ public class ProbabilityAIPlayer extends Player {
     private Board enemyBoard;
     private Board enemyProbabilityBoard;
     private int moveCounter = 0;
+    private float intMultiplier = 100;
 
     ProbabilityAIPlayer(String name) {
         super(name);
@@ -43,6 +44,7 @@ public class ProbabilityAIPlayer extends Player {
     }
 
     private Board generateProbabilityBoard(Board board) {
+        Board orientationBoard = generateOrientationBoard(board);
         Board probBoard = new Board(board.getBoardSizeX());
         ArrayList<Integer> cShips = findShips(board);
         ArrayList<Integer> missingShips = removeFrom(myShips, cShips);
@@ -53,15 +55,16 @@ public class ProbabilityAIPlayer extends Player {
             for (int j = 0; j < height; j++) {
                 probBoard.setSegment(i, j, 0);
                 if (board.getSegment(i, j) == Board.NOTHING) {
+                    probBoard.addSegment(i,j,1);
                     for (int k = 0; k < largestShip; k++) { //+x
                         if (board.getSegment(i + k, j) == Board.HIT_NOTHING) {
                             break;
                         } else if (board.getSegment(i + k, j) == Board.NOTHING) {
-                            int fieldValue = Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i + k, j) == Board.SHIP || board.getSegment(i + k, j) == Board.HIT_SHIP) {
-                            int modValue = 2; //TODO Make dependent on ship orientation.
-                            int fieldValue = modValue * Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            float modValue = orientationBoard.getSegment(i+k,j)/intMultiplier;
+                            int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -69,11 +72,11 @@ public class ProbabilityAIPlayer extends Player {
                         if (board.getSegment(i, j + k) == Board.HIT_NOTHING) {
                             break;
                         } else if (board.getSegment(i, j + k) == Board.NOTHING) {
-                            int fieldValue = Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j + k) == Board.SHIP || board.getSegment(i, j + k) == Board.HIT_SHIP) {
-                            int modValue = 2; //TODO Make dependent on ship orientation.
-                            int fieldValue = modValue * Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            float modValue = orientationBoard.getSegment(i,j+k)/intMultiplier;
+                            int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -81,11 +84,11 @@ public class ProbabilityAIPlayer extends Player {
                         if (board.getSegment(i - k, j) == Board.HIT_NOTHING) {
                             break;
                         } else if (board.getSegment(i - k, j) == Board.NOTHING) {
-                            int fieldValue = Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i - k, j) == Board.SHIP || board.getSegment(i - k, j) == Board.HIT_SHIP) {
-                            int modValue = 2; //TODO Make dependent on ship orientation.
-                            int fieldValue = modValue * Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            float modValue = orientationBoard.getSegment(i-k,j)/intMultiplier;
+                            int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -93,11 +96,11 @@ public class ProbabilityAIPlayer extends Player {
                         if (board.getSegment(i, j - k) == Board.HIT_NOTHING) {
                             break;
                         } else if (board.getSegment(i, j - k) == Board.NOTHING) {
-                            int fieldValue = Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            int fieldValue = Collections.frequency(missingShips, k + 1);
                             probBoard.addSegment(i, j, fieldValue);
                         } else if (board.getSegment(i, j - k) == Board.SHIP || board.getSegment(i, j - k) == Board.HIT_SHIP) {
-                            int modValue = 2; //TODO Make dependent on ship orientation.
-                            int fieldValue = modValue * Collections.frequency(missingShips, k + 1) + board.getSegment(i, j);
+                            float modValue = orientationBoard.getSegment(i,j-k)/intMultiplier;
+                            int fieldValue = (int)(modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -188,6 +191,57 @@ public class ProbabilityAIPlayer extends Player {
             }
         }
         return largest;
+    }
+
+    private Board generateOrientationBoard(Board board) {
+        Board oBoard = new Board(board.getBoardSizeX());
+        int largestShip = getLargest(myShips);
+        int width = board.getBoardSizeX();
+        int height = board.getBoardSizeY();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                oBoard.setSegment(i,j,0);
+                float segmentValue = 0;
+                if (board.getSegment(i+1,j)==Board.SHIP){
+                    for (int k = 0; k < largestShip; k++) {
+                        if (board.getSegment(i+k,j)==Board.SHIP){
+                            segmentValue+=Collections.frequency(myShips,k+1)/myShips.size();
+                        }else{
+                            break;
+                        }
+                    }
+                }
+                if (board.getSegment(i-1,j)==Board.SHIP){
+                    for (int k = 0; k < largestShip; k++) {
+                        if (board.getSegment(i-k,j)==Board.SHIP){
+                            segmentValue+=Collections.frequency(myShips,k+1)/myShips.size();
+                        }else{
+                            break;
+                        }
+                    }
+                }
+                if (board.getSegment(i,j+1)==Board.SHIP){
+                    for (int k = 0; k < largestShip; k++) {
+                        if (board.getSegment(i,j+k)==Board.SHIP){
+                            segmentValue-=Collections.frequency(myShips,k+1)/myShips.size();
+                        }else{
+                            break;
+                        }
+                    }
+                }
+                if (board.getSegment(i,j-1)==Board.SHIP){
+                    for (int k = 0; k < largestShip; k++) {
+                        if (board.getSegment(i,j-k)==Board.SHIP){
+                            segmentValue-=Collections.frequency(myShips,k+1)/myShips.size();
+                        }else{
+                            break;
+                        }
+                    }
+                }
+                oBoard.setSegment(i,j,(int)(segmentValue*intMultiplier));
+            }
+        }
+        return oBoard;
     }
 
     protected void placeAShip() {
