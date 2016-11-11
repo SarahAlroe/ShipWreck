@@ -39,7 +39,7 @@ public class ProbabilityAIPlayer extends Player {
             result = Board.HIT_NOTHING;
         }
         enemyBoard.setSegment(target, result);
-        BoardVisualiser.generateImage(enemyProbabilityBoard, Integer.toString(moveCounter));
+        //BoardVisualiser.generateImage(enemyProbabilityBoard, Integer.toString(moveCounter));
         moveCounter += 1;
     }
 
