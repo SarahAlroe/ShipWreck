@@ -2,7 +2,7 @@
  * Created by silasa on 10/25/16.
  */
 public class RealPlayer extends Player {
-    private Graphics graphics;
+    private GameGraphics graphics;
     private boolean isNew;
     private boolean waitingForHuman = false;
     private Position startPosition;
@@ -10,7 +10,7 @@ public class RealPlayer extends Player {
 
     RealPlayer(String name) {
         super(name);
-        graphics = Graphics.getInstance();
+        graphics = GameGraphics.getInstance();
         isNew = true;
     }
 
