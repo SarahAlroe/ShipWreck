@@ -35,11 +35,13 @@ public class RealPlayer extends Player {
     void placeAShip() {
         if (!waitingForHuman) {
             if (isNew) {
+                isNew = false;
                 graphics.drawGrid(gameLogic.getPlayerBoardSize(this), 0);
                 graphics.drawGrid(gameLogic.getEnemyBoardSize(this), 1);
+                drawMyBoard();
             }
             waitingForHuman = true;
-            graphics.highlightBoardSquares(gameLogic.getPlaceablePositions(this), 0);
+            graphics.highlightBoardSquares(gameLogic.getPlaceablePositions(this));
             if (gameLogic.getNextPlacement(this) > 1) {
                 graphics.pushText("Choose the start location for a " + gameLogic.getNextPlacement(this) + " block ship");
             } else {
@@ -50,7 +52,8 @@ public class RealPlayer extends Player {
 
     @Override
     public void hitByEnemy(Position hitPosition, int hitType) {
-        graphics.markBoard(hitPosition, hitType, 0);
+        drawMyBoard();
+        //graphics.markBoard(hitPosition, hitType, 0);
         if (hitType == Board.NOTHING) {
             graphics.pushText("Enemy hit nothing...");
         } else if (hitType == Board.SHIP) {
@@ -81,7 +84,16 @@ public class RealPlayer extends Player {
             } else if (hitResult == Board.HIT_SHIP) {
                 graphics.pushText("You hit one of their ships, but it was already hit.");
             }
+            waitingForHuman=false;
+        }else {
+            System.out.println("idk");
         }
+    }
+    void boardWasClicked(int x, int y){
+        Position pos = graphics.getPosFromCoords(x,y);
+        if (pos==null){return;}
+        int board = graphics.getBoardFromCoords(x,y);
+        handleClick(pos,board);
     }
 
     void chooseStartPosition(Position position) {
@@ -92,19 +104,30 @@ public class RealPlayer extends Player {
             return;
         }
         graphics.clearBoardHighlights(0);
-        graphics.highlightBoardSquares(gameLogic.getPossibleEndPositions(this, position, gameLogic.getNextPlacement(this)), 0);
+        graphics.highlightBoardSquares(gameLogic.getPossibleEndPositions(this, position, gameLogic.getNextPlacement(this)));
+        graphics.markBoard(position,Board.HIT_SHIP,0);
         graphics.pushText("Choose the end location for the " + gameLogic.getNextPlacement(this) + " block ship");
     }
 
     void placeShipEnd(Position position) {
         if (gameLogic.placeShip(startPosition, position, this)) {
             graphics.pushText("Ship placed");
+            drawMyBoard();
         } else {
             graphics.pushText("Ship placement error");
         }
         graphics.clearBoardHighlights(0);
-        waitingForHuman = false;
         startPositionChosen = false;
+        waitingForHuman = false;
+    }
+
+    private void drawMyBoard() {
+        Board myBoard = gameLogic.getPlayerBoard(this);
+        for (int i = 0; i<myBoard.getBoardSizeX();i++){
+            for (int j = 0; j<myBoard.getBoardSizeY();j++){
+                graphics.markBoard(new Position(i,j), myBoard.getSegment(i,j),0);
+            }
+        }
     }
 
     //TODO add to clicklistener (make click listener)

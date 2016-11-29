@@ -31,9 +31,9 @@ public class GameLogic {
         // load player and board, set gamestate
         board1 = new Board(boardSize);
         board2 = new Board(boardSize);
-        player1 = new ProbabilityAIPlayer("Player-1"); //TODO Replace with proper player class
+        player1 = new RealPlayer("Hooman");
         player1.start();
-        player2 = new SimpleAIPlayer("Player-2");
+        player2 = new ProbabilityAIPlayer("Probability AI");
         player2.start();
         shipsToPlace1 = generateShipsFromBoardSize(board1.getBoardSizeX(), board1.getBoardSizeY());
         shipsToPlace2 = generateShipsFromBoardSize(board2.getBoardSizeX(), board2.getBoardSizeY());
@@ -114,7 +114,7 @@ public class GameLogic {
         }
     }
 
-    private Board getPlayerBoard(Player player) {
+    public Board getPlayerBoard(Player player) {
         if (player.equals(player1)) {
             return board1;
         } else {
@@ -129,6 +129,14 @@ public class GameLogic {
             return (hasWon == 2);
         }
         return false;
+    }
+
+    RealPlayer getRealPlayer(){
+        if (player1 instanceof RealPlayer){
+            return (RealPlayer) player1;
+        }else if (player2 instanceof RealPlayer){
+            return (RealPlayer) player2;
+        }else{ return null;}
     }
 
     public int[] getEnemyBoardSize(Player player) {
@@ -210,6 +218,9 @@ public class GameLogic {
         if (!isWithinBorders(lastPos, board)) return false;
         //Check if single block ship, and ok.
         if (firstPos.equals(lastPos) && board.getSegment(firstPos) == Board.NOTHING) {
+            if (getNextPlacement(getPlayerFromBoard(board))>1){
+                return false;
+            }
             return true;
         }
         //Check each position the ship is going to be on.
@@ -247,6 +258,12 @@ public class GameLogic {
             return true;
         }
         return false;
+    }
+
+    private Player getPlayerFromBoard(Board board) {
+        if (board.equals(board1)){
+            return player1;
+        }return player2;
     }
 
     public void checkIfSetupDone() {

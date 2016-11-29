@@ -15,19 +15,20 @@ abstract class Player implements Runnable {
         gameLogic = GameLogic.getInstance();
         while (true) {
             GameState nextState = gameLogic.getNextState(this);
-            if (nextState == GameState.WAIT || nextState == GameState.PRESETUP) {
-                try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else if (nextState == GameState.SETUP) {
+            //if (nextState == GameState.WAIT || nextState == GameState.PRESETUP) {
+            //} else
+                if (nextState == GameState.SETUP) {
                 placeAShip();
             } else if (nextState == GameState.PLAY) {
                 makeAMove();
             } else if (nextState == GameState.GAMEOVER) {
                 endGame();
                 break;
+            }
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
