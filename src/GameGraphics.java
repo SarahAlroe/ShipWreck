@@ -13,13 +13,14 @@ public class GameGraphics extends Component {
     public int boardFieldCount = 10;
     public int buttonWidth;
     public int buttonHeight;
-    public int outerMargin = 6;
+    public int outerMargin = 10;
     public int buttonMargin = 6;
     public int highlightWidth = 4;
     public Position secondBoardStart;
     public Position physicalBoardSize;
     public boolean boardsArrangedHorizontally = true;
     private Config config = Config.getInstance();
+    String stringToDraw;
 
     private GameGraphics() {
 
@@ -31,9 +32,9 @@ public class GameGraphics extends Component {
 
     public void paint(Graphics g) {
         calculateSizes();
-
         drawBoardContents(g, new Position(0, 0), 0);
         drawBoardContents(g, secondBoardStart, 1);
+        g.drawString(stringToDraw,secondBoardStart.getX()+outerMargin,secondBoardStart.getY()+outerMargin/2);
 
     }
 
@@ -116,6 +117,8 @@ public class GameGraphics extends Component {
     public void pushText(String text) {
         //Show some text on the screen
         System.out.println(text);
+        stringToDraw=text;
+        repaint();
     }
 
     public void clearBoardHighlights(int board) {
