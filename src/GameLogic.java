@@ -131,24 +131,18 @@ public class GameLogic {
         return false;
     }
 
-    RealPlayer getRealPlayer(){
-        if (player1 instanceof RealPlayer){
+    RealPlayer getRealPlayer() {
+        if (player1 instanceof RealPlayer) {
             return (RealPlayer) player1;
-        }else if (player2 instanceof RealPlayer){
+        } else if (player2 instanceof RealPlayer) {
             return (RealPlayer) player2;
-        }else{ return null;}
+        } else {
+            return null;
+        }
     }
 
     public int[] getEnemyBoardSize(Player player) {
         return getOppositeBoard(player).getBoardSize();
-    }
-
-    public int getNextPlacement(Player player) {
-        if (player.equals(player1) && shipsToPlace1.size() != 0) {
-            return shipsToPlace1.get(0);
-        } else if (player.equals(player2) && shipsToPlace2.size() != 0) {
-            return shipsToPlace2.get(0);
-        } else return 0;
     }
 
     public ArrayList<Position> getPlaceablePositions(Player player) {
@@ -216,17 +210,17 @@ public class GameLogic {
         //Check if within borders
         if (!isWithinBorders(firstPos, board)) return false;
         if (!isWithinBorders(lastPos, board)) return false;
-        int nextRealPlacement = getNextPlacement(getPlayerFromBoard(board))-1;
-        if (firstPos.getDistance(lastPos)>nextRealPlacement ||firstPos.getDistance(lastPos)<nextRealPlacement){
+        int nextRealPlacement = getNextPlacement(getPlayerFromBoard(board)) - 1;
+        if (firstPos.getDistance(lastPos) > nextRealPlacement || firstPos.getDistance(lastPos) < nextRealPlacement) {
             return false;
         }
         //Check that pos are on a line
-        if(!(firstPos.getX()==lastPos.getX() || firstPos.getY()==lastPos.getY())){
+        if (!(firstPos.getX() == lastPos.getX() || firstPos.getY() == lastPos.getY())) {
             return false;
         }
         //Check if single block ship, and ok.
         if (firstPos.equals(lastPos) && board.getSegment(firstPos) == Board.NOTHING) {
-            if (getNextPlacement(getPlayerFromBoard(board))>1){
+            if (getNextPlacement(getPlayerFromBoard(board)) > 1) {
                 return false;
             }
             return true;
@@ -268,12 +262,6 @@ public class GameLogic {
         return false;
     }
 
-    private Player getPlayerFromBoard(Board board) {
-        if (board.equals(board1)){
-            return player1;
-        }return player2;
-    }
-
     public void checkIfSetupDone() {
         if (shipsToPlace1.size() == 0 && shipsToPlace2.size() == 0) {
             gameState = GameState.PLAY;
@@ -289,6 +277,21 @@ public class GameLogic {
             return false;
         }
         return true;
+    }
+
+    public int getNextPlacement(Player player) {
+        if (player.equals(player1) && shipsToPlace1.size() != 0) {
+            return shipsToPlace1.get(0);
+        } else if (player.equals(player2) && shipsToPlace2.size() != 0) {
+            return shipsToPlace2.get(0);
+        } else return 0;
+    }
+
+    private Player getPlayerFromBoard(Board board) {
+        if (board.equals(board1)) {
+            return player1;
+        }
+        return player2;
     }
 
     public ArrayList<Position> getPossibleEndPositions(Board board, Position pos, int length) {

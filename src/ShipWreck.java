@@ -25,7 +25,7 @@ public class ShipWreck extends JApplet {
         ap.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                GameLogic.getInstance().getRealPlayer().boardWasClicked(e.getX(),e.getY());
+                GameLogic.getInstance().getRealPlayer().boardWasClicked(e.getX(), e.getY());
             }
         });
     }
@@ -37,30 +37,35 @@ public class ShipWreck extends JApplet {
         button.addActionListener(new MyAction(this));
         add(button);
     }
-    public void removePlayButton(){
-        remove(button);
-        revalidate();
-        repaint();
-    }
-    public void playButtonClicked(){
+
+    public void playButtonClicked() {
         GameLogic.getInstance().setup();
         removePlayButton();
         gameGraphics = GameGraphics.getInstance();
         add(gameGraphics);
         gameGraphics.setBackground(Color.black);
-        gameGraphics.drawGrid(new int[]{10,10},0);
-        gameGraphics.drawGrid(new int[]{10,10},1);
+        gameGraphics.drawGrid(new int[]{10, 10}, 0);
+        gameGraphics.drawGrid(new int[]{10, 10}, 1);
+        revalidate();
+        repaint();
+    }
+
+    public void removePlayButton() {
+        remove(button);
         revalidate();
         repaint();
     }
 }
+
 class MyAction implements ActionListener {
     public ShipWreck shipWreck;
-    public  MyAction(ShipWreck s){
+
+    public MyAction(ShipWreck s) {
         super();
         shipWreck = s;
     }
-    public void actionPerformed(ActionEvent ae){
+
+    public void actionPerformed(ActionEvent ae) {
         shipWreck.playButtonClicked();
     }
 }

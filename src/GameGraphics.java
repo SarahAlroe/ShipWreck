@@ -55,7 +55,7 @@ public class GameGraphics extends Component {
             for (int j = 0; j < boardFieldCount; j++) {
                 int startX = position.getX() + outerMargin + i * buttonWidth + i * buttonMargin;
                 int startY = position.getY() + outerMargin + j * buttonHeight + j * buttonMargin;
-                if (b==0 && myBoardHighlight[i][j]) {
+                if (b == 0 && myBoardHighlight[i][j]) {
                     g.setColor(Color.yellow);
                     g.fillRect(startX - highlightWidth, startY - highlightWidth, buttonWidth + 2 * highlightWidth, buttonHeight + 2 * highlightWidth);
                 }
@@ -90,7 +90,7 @@ public class GameGraphics extends Component {
             for (int i = 0; i < boardSize[0]; i++) {
                 for (int j = 0; j < boardSize[1]; j++) {
                     myBoard[i][j] = 99;
-                    myBoardHighlight[i][j]=false;
+                    myBoardHighlight[i][j] = false;
                 }
             }
         } else {
@@ -139,30 +139,31 @@ public class GameGraphics extends Component {
     }
 
     public Position getPosFromCoords(int x, int y) {
-        int originY=0;
-        int originX=0;
-        if (getBoardFromCoords(x,y)==1){
-            originX=secondBoardStart.getX();
-            originY=secondBoardStart.getY();
+        int originY = 0;
+        int originX = 0;
+        if (getBoardFromCoords(x, y) == 1) {
+            originX = secondBoardStart.getX();
+            originY = secondBoardStart.getY();
         }
         for (int i = 0; i < boardFieldCount; i++) {
             for (int j = 0; j < boardFieldCount; j++) {
                 int buttonStartX = originX + outerMargin + i * buttonWidth + i * buttonMargin;
                 int buttonStartY = originY + outerMargin + j * buttonHeight + j * buttonMargin;
-                if (x>buttonStartX && x<buttonStartX+buttonWidth && y>buttonStartY && y<buttonStartY+buttonHeight){
-                    return new Position(i,j);
+                if (x > buttonStartX && x < buttonStartX + buttonWidth && y > buttonStartY && y < buttonStartY + buttonHeight) {
+                    return new Position(i, j);
                 }
-            }}
+            }
+        }
         return null;
     }
 
     public int getBoardFromCoords(int x, int y) {
-        if (boardsArrangedHorizontally){
-            if (x>=secondBoardStart.getX()){
+        if (boardsArrangedHorizontally) {
+            if (x >= secondBoardStart.getX()) {
                 return 1;
             }
-        }else{
-            if (y>=secondBoardStart.getY()){
+        } else {
+            if (y >= secondBoardStart.getY()) {
                 return 1;
             }
         }

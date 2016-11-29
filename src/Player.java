@@ -15,9 +15,7 @@ abstract class Player implements Runnable {
         gameLogic = GameLogic.getInstance();
         while (true) {
             GameState nextState = gameLogic.getNextState(this);
-            //if (nextState == GameState.WAIT || nextState == GameState.PRESETUP) {
-            //} else
-                if (nextState == GameState.SETUP) {
+            if (nextState == GameState.SETUP) {
                 placeAShip();
             } else if (nextState == GameState.PLAY) {
                 makeAMove();
@@ -33,11 +31,11 @@ abstract class Player implements Runnable {
         }
     }
 
-    abstract void endGame();
+    abstract void placeAShip();
 
     abstract void makeAMove();
 
-    abstract void placeAShip();
+    abstract void endGame();
 
     public void start() {
         if (t == null) {

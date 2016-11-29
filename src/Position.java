@@ -25,9 +25,8 @@ public class Position {
         return (position.getX() == x && position.getY() == y);
     }
 
-    @Override
-    public String toString() {
-        return "[" + x + "," + y + "]";
+    public int getY() {
+        return y;
     }
 
     public int getX() {
@@ -38,21 +37,22 @@ public class Position {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setY(int y) {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "[" + x + "," + y + "]";
+    }
+
     public int getDistance(Position oPos) {
-        if (getX()+getY()>oPos.getX()+oPos.getY()){
-            System.out.println(getX()+getY()-oPos.getX()-oPos.getY());
-            return getX()+getY()-oPos.getX()-oPos.getY();
-        }else {
-            System.out.println(getX()+getY()-oPos.getX()-oPos.getY());
-            return oPos.getX()+oPos.getY()-getX()-getY();
+        if (getX() + getY() > oPos.getX() + oPos.getY()) {
+            System.out.println(getX() + getY() - oPos.getX() - oPos.getY());
+            return getX() + getY() - oPos.getX() - oPos.getY();
+        } else {
+            System.out.println(getX() + getY() - oPos.getX() - oPos.getY());
+            return oPos.getX() + oPos.getY() - getX() - getY();
         }
     }
 }

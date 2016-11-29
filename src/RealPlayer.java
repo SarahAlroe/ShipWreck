@@ -50,6 +50,15 @@ public class RealPlayer extends Player {
         }
     }
 
+    private void drawMyBoard() {
+        Board myBoard = gameLogic.getPlayerBoard(this);
+        for (int i = 0; i < myBoard.getBoardSizeX(); i++) {
+            for (int j = 0; j < myBoard.getBoardSizeY(); j++) {
+                graphics.markBoard(new Position(i, j), myBoard.getSegment(i, j), 0);
+            }
+        }
+    }
+
     @Override
     public void hitByEnemy(Position hitPosition, int hitType) {
         drawMyBoard();
@@ -84,16 +93,19 @@ public class RealPlayer extends Player {
             } else if (hitResult == Board.HIT_SHIP) {
                 graphics.pushText("You hit one of their ships, but it was already hit.");
             }
-            waitingForHuman=false;
-        }else {
+            waitingForHuman = false;
+        } else {
             System.out.println("idk");
         }
     }
-    void boardWasClicked(int x, int y){
-        Position pos = graphics.getPosFromCoords(x,y);
-        if (pos==null){return;}
-        int board = graphics.getBoardFromCoords(x,y);
-        handleClick(pos,board);
+
+    void boardWasClicked(int x, int y) {
+        Position pos = graphics.getPosFromCoords(x, y);
+        if (pos == null) {
+            return;
+        }
+        int board = graphics.getBoardFromCoords(x, y);
+        handleClick(pos, board);
     }
 
     void chooseStartPosition(Position position) {
@@ -105,7 +117,7 @@ public class RealPlayer extends Player {
         }
         graphics.clearBoardHighlights(0);
         graphics.highlightBoardSquares(gameLogic.getPossibleEndPositions(this, position, gameLogic.getNextPlacement(this)));
-        graphics.markBoard(position,Board.HIT_SHIP,0);
+        graphics.markBoard(position, Board.HIT_SHIP, 0);
         graphics.pushText("Choose the end location for the " + gameLogic.getNextPlacement(this) + " block ship");
     }
 
@@ -121,16 +133,5 @@ public class RealPlayer extends Player {
         startPositionChosen = false;
         waitingForHuman = false;
     }
-
-    private void drawMyBoard() {
-        Board myBoard = gameLogic.getPlayerBoard(this);
-        for (int i = 0; i<myBoard.getBoardSizeX();i++){
-            for (int j = 0; j<myBoard.getBoardSizeY();j++){
-                graphics.markBoard(new Position(i,j), myBoard.getSegment(i,j),0);
-            }
-        }
-    }
-
-    //TODO add to clicklistener (make click listener)
 
 }
