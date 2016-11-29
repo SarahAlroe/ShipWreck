@@ -216,6 +216,14 @@ public class GameLogic {
         //Check if within borders
         if (!isWithinBorders(firstPos, board)) return false;
         if (!isWithinBorders(lastPos, board)) return false;
+        int nextRealPlacement = getNextPlacement(getPlayerFromBoard(board))-1;
+        if (firstPos.getDistance(lastPos)>nextRealPlacement ||firstPos.getDistance(lastPos)<nextRealPlacement){
+            return false;
+        }
+        //Check that pos are on a line
+        if(!(firstPos.getX()==lastPos.getX() || firstPos.getY()==lastPos.getY())){
+            return false;
+        }
         //Check if single block ship, and ok.
         if (firstPos.equals(lastPos) && board.getSegment(firstPos) == Board.NOTHING) {
             if (getNextPlacement(getPlayerFromBoard(board))>1){

@@ -115,6 +115,7 @@ public class RealPlayer extends Player {
             drawMyBoard();
         } else {
             graphics.pushText("Ship placement error");
+            drawMyBoard();
         }
         graphics.clearBoardHighlights(0);
         startPositionChosen = false;

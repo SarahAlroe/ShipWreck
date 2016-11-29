@@ -45,4 +45,14 @@ public class Position {
     public void setY(int y) {
         this.y = y;
     }
+
+    public int getDistance(Position oPos) {
+        if (getX()+getY()>oPos.getX()+oPos.getY()){
+            System.out.println(getX()+getY()-oPos.getX()-oPos.getY());
+            return getX()+getY()-oPos.getX()-oPos.getY();
+        }else {
+            System.out.println(getX()+getY()-oPos.getX()-oPos.getY());
+            return oPos.getX()+oPos.getY()-getX()-getY();
+        }
+    }
 }
