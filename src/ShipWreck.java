@@ -12,6 +12,7 @@ public class ShipWreck extends JApplet {
 
     public GameGraphics gameGraphics;
     public JButton button;
+    public JLabel label;
 
     public static void main(String[] args) {
         JFrame f = new JFrame("ShipWreck");
@@ -35,7 +36,9 @@ public class ShipWreck extends JApplet {
         setBackground(Color.black);
         button = new JButton("Play");
         button.addActionListener(new MyAction(this));
-        add(button);
+        label = new JLabel("ShipWreck");
+        add(label, BorderLayout.NORTH);
+        add(button,BorderLayout.CENTER);
     }
 
     public void playButtonClicked() {
@@ -52,6 +55,7 @@ public class ShipWreck extends JApplet {
 
     public void removePlayButton() {
         remove(button);
+        remove(label);
         revalidate();
         repaint();
     }
