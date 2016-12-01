@@ -13,6 +13,7 @@ public class ShipWreck extends JApplet {
     public GameGraphics gameGraphics;
     public JButton button;
     public JLabel label;
+    private Config config = Config.getInstance();
 
     public static void main(String[] args) {
         JFrame f = new JFrame("ShipWreck");
@@ -47,8 +48,8 @@ public class ShipWreck extends JApplet {
         gameGraphics = GameGraphics.getInstance();
         add(gameGraphics);
         gameGraphics.setBackground(Color.black);
-        gameGraphics.drawGrid(new int[]{10, 10}, 0);
-        gameGraphics.drawGrid(new int[]{10, 10}, 1);
+        gameGraphics.drawGrid(new int[]{config.getBoardSize(), config.getBoardSize()}, 0);
+        gameGraphics.drawGrid(new int[]{config.getBoardSize(), config.getBoardSize()}, 1);
         revalidate();
         repaint();
     }
