@@ -35,7 +35,7 @@ public class ShipWreck extends JApplet {
         setLayout(new BorderLayout());
         setBackground(Color.black);
         button = new JButton("Play");
-        button.addActionListener(new MyAction(this));
+        button.addActionListener(new ButtonClickListener(this));
         label = new JLabel("ShipWreck");
         add(label, BorderLayout.NORTH);
         add(button,BorderLayout.CENTER);
@@ -61,14 +61,12 @@ public class ShipWreck extends JApplet {
     }
 }
 
-class MyAction implements ActionListener {
+class ButtonClickListener implements ActionListener {
     public ShipWreck shipWreck;
-
-    public MyAction(ShipWreck s) {
+    public ButtonClickListener(ShipWreck s) {
         super();
         shipWreck = s;
     }
-
     public void actionPerformed(ActionEvent ae) {
         shipWreck.playButtonClicked();
     }
