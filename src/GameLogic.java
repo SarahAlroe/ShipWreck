@@ -43,8 +43,8 @@ public class GameLogic {
     public ArrayList<Integer> generateShipsFromBoardSize(int maxX, int maxY) {
         ArrayList<Integer> ships = new ArrayList<>();
         int boardSize = maxX * maxY;
-        double[] shipAmount = {0.03, 0.02, 0.01, 0.005, 0.001};// Amount of [n+1] ships per square
-        int maxShipSize = 3;
+        double[] shipAmount = {0.02, 0.02, 0.01, 0.01, 0.001};// Amount of [n+1] ships per square
+        int maxShipSize = 5;
         for (int i = 1; i < maxShipSize; i++) {
             int iShipsToPlace = (int) (shipAmount[i - 1] * boardSize);
             for (int j = 0; j < iShipsToPlace; j++) {
