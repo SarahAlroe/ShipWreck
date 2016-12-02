@@ -68,7 +68,7 @@ public class ProbabilityAIPlayer extends Player {
                             if (orientationBoard.getSegment(i + k, j) > 0) {
                                 modValue = orientationBoard.getSegment(i + k, j) / intMultiplier;
                             }
-                            int fieldValue = (int) (1 + modValue * Collections.frequency(missingShips, k + 1));
+                            int fieldValue = (int) (5 + modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -84,7 +84,7 @@ public class ProbabilityAIPlayer extends Player {
                             if (orientationBoard.getSegment(i, j + k) < 0) {
                                 modValue = orientationBoard.getSegment(i, j + k) / intMultiplier * -1;
                             }
-                            int fieldValue = (int) (1 + modValue * Collections.frequency(missingShips, k + 1));
+                            int fieldValue = (int) (5 + modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -100,7 +100,7 @@ public class ProbabilityAIPlayer extends Player {
                             if (orientationBoard.getSegment(i - k, j) > 0) {
                                 modValue = orientationBoard.getSegment(i - k, j) / intMultiplier;
                             }
-                            int fieldValue = (int) (1 + modValue * Collections.frequency(missingShips, k + 1));
+                            int fieldValue = (int) (5 + modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
@@ -116,7 +116,7 @@ public class ProbabilityAIPlayer extends Player {
                             if (orientationBoard.getSegment(i, j - k) < 0) {
                                 modValue = orientationBoard.getSegment(i, j - k) / intMultiplier * -1;
                             }
-                            int fieldValue = (int) (1 + modValue * Collections.frequency(missingShips, k + 1));
+                            int fieldValue = (int) (5 + modValue * Collections.frequency(missingShips, k + 1));
                             probBoard.addSegment(i, j, fieldValue);
                         }
                     }
